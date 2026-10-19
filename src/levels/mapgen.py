@@ -39,6 +39,12 @@ class Map:
         return placed
     def finalize(s, start, wall='1'):
         W, H = s.w, s.h
+        for x in range(W):
+            for y in (0, H-1):
+                if s.g[y][x] == '.': s.g[y][x] = wall
+        for y in range(H):
+            for x in (0, W-1):
+                if s.g[y][x] == '.': s.g[y][x] = wall
         fat = set()
         for y in range(1, H-1):
             for x in range(1, W-1):
