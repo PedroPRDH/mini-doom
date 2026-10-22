@@ -4571,7 +4571,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v25',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v26',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4913,8 +4913,9 @@ ui.onpointerup=ui.onpointercancel=e=>{
  if(e.pointerType=='mouse'){firing=false;return}
  if(e.pointerId===jp){jp=null;joy.x=joy.y=joy.m=0;J.style.display='none';KN.style.transform=''}
  else if(e.pointerId===lp){lp=null;if(!lm&&e.type=='pointerup'&&performance.now()-lst<300)shotReq=true}};
-const fb=$('fire');fb.onpointerdown=e=>{firing=true;fb.setPointerCapture(e.pointerId)};
-fb.onpointerup=fb.onpointercancel=()=>{firing=false};
+const fb=$('fire');let fpid=-1,fx0,fy0;fb.onpointerdown=e=>{firing=true;fpid=e.pointerId;fx0=e.clientX;fy0=e.clientY;fb.setPointerCapture(e.pointerId)};
+fb.onpointermove=e=>{if(e.pointerId!==fpid||state!='play')return;look+=e.clientX-fx0;lookY+=e.clientY-fy0;fx0=e.clientX;fy0=e.clientY};
+fb.onpointerup=fb.onpointercancel=e=>{if(e.pointerId===fpid)fpid=-1;firing=false};
 var whOn=0,whSel=-1,whX=0,whY=0,whOX=0,whOY=0,whT=0,whPid=-1,TSC=1,whEl=null,whSl=[];
 (function(){const st=document.createElement('style');st.textContent='#wh{position:fixed;inset:0;z-index:30;display:none;pointer-events:none;background:radial-gradient(circle,rgba(40,0,0,.25),rgba(0,0,0,.65));font-family:inherit;color:#fff}#wh .c{position:absolute;left:50%;top:50%;width:0;height:0}#wh .s{position:absolute;width:84px;height:46px;margin:-23px 0 0 -42px;border:2px solid rgba(255,255,255,.5);background:rgba(20,20,20,.8);border-radius:10px;font-size:11px;line-height:1.15;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;touch-action:none;transition:transform .08s}#wh .s b{font-size:15px;color:#ffd24a}#wh .s.o0{opacity:.25}#wh .s.cu{border-color:#ffd24a}#wh .s.h{background:rgba(190,30,20,.9);transform:scale(1.15);border-color:#fff}#wh .t{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:15px;letter-spacing:2px;text-align:center;opacity:.9;text-shadow:0 0 6px #000}';document.head.appendChild(st);
  whEl=document.createElement('div');whEl.id='wh';const c=document.createElement('div');c.className='c';whEl.appendChild(c);
