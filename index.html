@@ -4209,7 +4209,7 @@ const LV=[
 {m:E9,hg:E9h,pt:[8,3],s:[2.5,12.5,0.0],wh:6,sky:1,fg:38,e:[[18,4],[19,5],[1,4],[5,3],[6,2],[9,2],[7,2],[20,3],[21,3],[14,1],[16,1],[4,3]],a:13,h:10,r:4,w:[],f:[96,48,24],t:[7,8,9,10,11,12],fl:3,cl:0,ti:['NIVEL 9','LA TIERRA · AUTOPISTA EN RUINAS']},
 {m:E10,hg:E10h,pt:[10,5],s:[3.5,26.0,-0.78],wh:6,sky:1,fg:38,e:[[10,1],[16,2],[9,3],[7,2],[8,1],[20,3],[19,4],[18,4],[21,3],[0,4]],a:14,h:11,r:5,w:[],last:1,f:[96,48,24],t:[7,8,9,10,11,12],fl:5,cl:0,ti:['NIVEL 10','LA TIERRA · LA ÚLTIMA BATALLA']}];
 const DF=[{n:'FÁCIL',dm:.6,hp:.7,am:1.5},{n:'NORMAL',dm:1,hp:1,am:1},{n:'DIFÍCIL',dm:1.5,hp:1.4,am:.8},{n:'PESADILLA',dm:2.2,hp:1.8,am:.6}];
-var DRS=1;let ST={df:1,rs:1,tx:1,lg:0,pt:1,sk:1,rd:1,sn:1,mu:2,sv:1,mq:1,ci:0,fl:1,fc:0,dr:1,wh:0};try{Object.assign(ST,JSON.parse(localStorage.getItem('md7')||'{}'))}catch(e){}
+var DRS=1;let ST={df:1,rs:1,tx:1,lg:0,pt:1,sk:1,rd:1,sn:1,mu:2,sv:1,mq:1,ci:0,fl:1,fc:0,dr:1,wh:0,done:0};try{Object.assign(ST,JSON.parse(localStorage.getItem('md7')||'{}'))}catch(e){}
 const SV=()=>{try{localStorage.setItem('md7',JSON.stringify(ST))}catch(e){}};
 const OPT=[['df','DIFICULTAD',DF.map(d=>d.n)],['rs','RESOLUCIÓN 3D',['BAJA','MEDIA','ALTA','ULTRA']],['tx','TEXTURAS',['64 px','128 px','256 px']],['lg','LUCES',['BAJA','ALTA']],['pt','PARTÍCULAS',['NO','SÍ']],['sk','SACUDIDA',['NO','SÍ']],['rd','RADAR',['NO','SÍ']],['sn','SENSIBILIDAD',['BAJA','MEDIA','ALTA']],['mu','MÚSICA',['NO','BAJA','MEDIA','ALTA']],['sv','EFECTOS',['BAJO','MEDIO','ALTO']],['mq','MODELOS',['SENCILLOS','DETALLADOS']],['ci','CINEMÁTICAS',['SÍ','NO']],['fl','LÍMITE DE FPS',['30','60','120','144','SIN LÍMITE']],['fc','CONTADOR DE FPS',['NO','FPS','DETALLADO']],['dr','RESOLUCIÓN DINÁMICA',['NO','SÍ']],['wh','RUEDA DE ARMAS',['CÁMARA LENTA','PAUSA']]];
 /* pr=velocidad proyectil, pc=color, n=cantidad, sd=abanico, sh=escudo, sm=invoca(tipo+1), si=cada cuanto, bs=jefe */
@@ -4571,7 +4571,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v26',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v27',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4583,6 +4583,10 @@ addEventListener('resize',resize);addEventListener('orientationchange',()=>{setT
 function goFS(){try{const d=document.documentElement;if(APK||document.fullscreenElement||!d.requestFullscreen||!matchMedia('(pointer:coarse)').matches||matchMedia('(display-mode: fullscreen)').matches||matchMedia('(display-mode: standalone)').matches)return;const p=d.requestFullscreen({navigationUI:'hide'});if(p&&p.catch)p.catch(()=>{})}catch(e){}}
 
 /* niveles */
+const SVK='md7sv';
+function svGet(){try{const v=JSON.parse(localStorage.getItem(SVK)||'null');if(v&&v.l>=0&&v.l<LV.length&&Array.isArray(v.own))return v}catch(e){}return null}
+function svPut(){try{localStorage.setItem(SVK,JSON.stringify({l:lvl,hp:Math.ceil(hp),ar:Math.ceil(ar),ammo:ammo,own:own,cs:cs}))}catch(e){}}
+var startMode=0,selLv=0;
 function newGame(){lvl=0;hp=HM();ar=CH[cs].ar;ammo=30;own=[1,0,0,0,0,0,0,0];wi=0}
 function load(){
  const L=LV[lvl];if(L.fin){own=[1,1,1,1,1,1,1,1];ammo=Math.max(ammo,ST.df==2?340:150)}M=L.m.map(r=>[...r].map(c=>c=='.'?0:+c));MH=M.length;MW=M[0].length;FDc=-1;HG=new Float32Array(MW*MH);if(L.hg)L.hg.forEach((r,y)=>{for(let x=0;x<r.length;x++)HG[y*MW+x]=(+r[x])*.5});cin=null;document.body.classList.remove('cine');
@@ -4663,13 +4667,18 @@ function icon(e,ph,b){const pt=e.pn=((e.pn|0)+1)%4;S(pt==1?'roar':'fb',e.x,e.y);
  else if(pt==2){e.bur=4+ph*2;e.bt=0}
  else{e.spi=2.2+ph*.5;e.s2=0;e.sa=b-1.2}}
 function hurt(n){if(dashT>0)return;n*=DF[ST.df].dm;const a=Math.min(ar,n*.5);ar-=a;hp-=n-a;dmg=1;shake=Math.max(shake,.5);S('hurt');if(hp<=0){hp=0;end('dead')}}
-function end(s){state=s;firing=false;const L=LV[lvl],last=!!L.last;S(s=='dead'?'lose':'win');
- setTimeout(()=>show(s=='dead'?'HAS MUERTO':last?'¡GANASTE!':(L.nt||'¡NIVEL '+(lvl+1)+' COMPLETO!'),s=='dead'?'Los demonios ganaron esta vez.':last?'Derrotaste a las legiones del Infierno en la Tierra. ¡La humanidad está a salvo!':(L.nx||'Siguiente: nivel '+(lvl+2)+' de '+LV.length+'.'),s=='dead'?'REINTENTAR':last?'JUGAR DE NUEVO':(L.nb||'SIGUIENTE NIVEL')),s=='dead'?900:700)}
-function show(t,p,b){diag();$('cw').style.display=state=='title'||(state=='win'&&LV[lvl].last)?'block':'none';$('mt').textContent=t;$('mp').textContent=p;$('mb').textContent=b;$('msg').style.display='flex'}
+function end(s){state=s;firing=false;const L=LV[lvl],last=!!L.last;if(s=='win'&&last){ST.done=1;SV();try{localStorage.removeItem(SVK)}catch(e){}}S(s=='dead'?'lose':'win');
+ setTimeout(()=>show(s=='dead'?'HAS MUERTO':last?'¡GANASTE!':(L.nt||'¡NIVEL '+(lvl+1)+' COMPLETO!'),s=='dead'?'Los demonios ganaron esta vez.':last?'Derrotaste a las legiones del Infierno en la Tierra. ¡La humanidad está a salvo! DESBLOQUEADO: en el menú principal puedes rejugar cualquier nivel con todas las armas y las botas desde el inicio.':(L.nx||'Siguiente: nivel '+(lvl+2)+' de '+LV.length+'.'),s=='dead'?'REINTENTAR':last?'JUGAR DE NUEVO':(L.nb||'SIGUIENTE NIVEL')),s=='dead'?900:700)}
+const mcB=document.createElement('button'),mlB=document.createElement('button'),mnB=document.createElement('button');mcB.className=mlB.className=mnB.className='s2';mcB.style.display=mlB.style.display=mnB.style.display='none';$('mb').after(mcB,mnB,mlB);
+function titleBtns(){const sv=svGet(),t=state=='title',d=t&&ST.done;mcB.style.display=t&&sv?'block':'none';mnB.style.display=mlB.style.display=d?'block':'none';if(sv)mcB.textContent='CONTINUAR · NIVEL '+(sv.l+1);const T=LV[selLv].ti;mnB.textContent='NIVEL '+(selLv+1)+(T?' · '+T[1]:'')+' ▸';mlB.textContent='REJUGAR (TODAS LAS ARMAS Y BOTAS)'}
+mcB.onclick=()=>{startMode=1;$('mb').onclick()};
+mnB.onclick=()=>{selLv=(selLv+1)%LV.length;titleBtns()};
+mlB.onclick=()=>{startMode=2;$('mb').onclick()};
+function show(t,p,b){diag();$('cw').style.display=state=='title'||(state=='win'&&LV[lvl].last)?'block':'none';titleBtns();if(state=='title'&&svGet()&&b=='JUGAR')b='NUEVA PARTIDA';$('mt').textContent=t;$('mp').textContent=p;$('mb').textContent=b;$('msg').style.display='flex'}
 $('mb').onclick=()=>{const retry=state=='dead';goFS();$('msg').style.display='none';$('set').style.display='none';if(state=='pause'){state='play';return}
- if(state=='title')newGame();else if(state=='win'){if(lvl<LV.length-1){lvl++;hp=Math.min(HM(),hp+30)}else newGame()}
+ if(state=='title'){if(startMode==1){const v=svGet();if(v){cs=v.cs|0;lvl=v.l;hp=v.hp;ar=v.ar;ammo=v.ammo;own=v.own;wi=0}else newGame()}else if(startMode==2){newGame();lvl=selLv;own=[1,1,1,1,1,1,1,1];ammo=ST.df==2?340:150;ST.bt=1;SV();wi=1}else newGame();startMode=0}else if(state=='win'){if(lvl<LV.length-1){lvl++;hp=Math.min(HM(),hp+30)}else newGame()}
  else if(state=='dead'){hp=HM();ar=CH[cs].ar;own=sOwn.slice();ammo=Math.max(sAmmo,30);wi=0}
- load();state='play';musLvl();S('click');if(LV[lvl].fin&&!retry&&!ST.ci)startCine('intro');else if(LV[lvl].ti&&!LV[lvl].fin){const T0=LV[lvl].ti,l0=lvl;cTitle(T0[0],T0[1]);setTimeout(()=>{if(lvl==l0&&state=='play')cTitle('')},3200)}};
+ load();state='play';svPut();musLvl();S('click');if(LV[lvl].fin&&!retry&&!ST.ci)startCine('intro');else if(LV[lvl].ti&&!LV[lvl].fin){const T0=LV[lvl].ti,l0=lvl;cTitle(T0[0],T0[1]);setTimeout(()=>{if(lvl==l0&&state=='play')cTitle('')},3200)}};
 const nextW=()=>{for(let i=1;i<8;i++){const j=(wi+i)%8;if(own[j]){wi=j;fireT=0;S('click');break}}};
 
 /* ===== IA de enemigos: ruta por mapa de flujo, estrategias por tipo, esquive y alerta en grupo ===== */
@@ -4943,7 +4952,7 @@ function chooser(){const c=$('chs');c.innerHTML='';CH.forEach((h,i)=>{const b=do
 buildSet();buildTex();resize();applyLights();newGame();load();
 chooser();show('MINI DOOM','Ahora en 3D real. 10 niveles: del Infierno a la Tierra, con el jefe Icono del Pecado, 18 demonios y 8 armas. Izquierda: mover (al borde corres). Derecha: arrastra para mirar, toca para disparar. DASH esquiva. En AJUSTES cambias dificultad y gráficos.','JUGAR');
 {const b=$('mb'),T=NM.length;b.disabled=true;b.textContent='CARGANDO 0/'+T;mdl.cb=n=>{b.textContent='CARGANDO '+n+'/'+T};
- loadModels(()=>{try{buildLevel()}catch(e){console.error(e)}b.disabled=false;b.textContent=state=='title'?'JUGAR':b.textContent;window.__ready=1})}
+ loadModels(()=>{try{buildLevel()}catch(e){console.error(e)}b.disabled=false;b.textContent=state=='title'?(svGet()?'NUEVA PARTIDA':'JUGAR'):b.textContent;titleBtns();window.__ready=1})}
 let lt=0;const HUDc=['','',''];
 const FPSE=document.createElement('div');FPSE.style.cssText='position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 28px);color:#9f9;font:12px/1.3 monospace;text-shadow:0 1px 0 #000;pointer-events:none;z-index:5;white-space:pre;text-align:center;display:none';document.body.appendChild(FPSE);
 const PF={n:0,t:0,u:0,r:0,late:0,lc:0,fast:0};renderer.info.autoReset=false;
