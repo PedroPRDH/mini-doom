@@ -1,2 +1,5 @@
 node_modules
 android
+electron/dist
+electron/app
+electron/icon.png

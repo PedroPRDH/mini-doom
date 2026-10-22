@@ -1,0 +1,38 @@
+name: Construir PC (.exe)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Preparar juego y icono
+        shell: bash
+        run: |
+          mkdir -p electron/app
+          cp index.html electron/app/index.html
+          cp icon-512.png electron/icon.png
+      - name: Instalar Electron
+        working-directory: electron
+        run: npm install
+      - name: Empaquetar .exe portable
+        working-directory: electron
+        run: npx electron-builder --win portable --publish never
+      - name: Guardar como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiniDoom-PC
+          path: electron/dist/MiniDoom-PC.exe
+      - name: Publicar en la release pc-latest
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view pc-latest >/dev/null 2>&1 || gh release create pc-latest --title "Mini Doom PC (ultima version)" --notes "Descarga MiniDoom-PC.exe y ejecutalo. No requiere instalacion." --latest=false
+          gh release upload pc-latest electron/dist/MiniDoom-PC.exe --clobber

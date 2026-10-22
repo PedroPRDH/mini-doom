@@ -1,0 +1,23 @@
+{
+  "name": "minidoom-pc",
+  "version": "1.0.0",
+  "description": "Mini Doom para PC",
+  "main": "main.js",
+  "author": "PedroPRDH",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.minidoom.pc",
+    "productName": "Mini Doom",
+    "files": ["main.js", "icon.png", "app/**"],
+    "win": {
+      "target": "portable",
+      "icon": "icon.png",
+      "artifactName": "MiniDoom-PC.exe"
+    },
+    "portable": { "artifactName": "MiniDoom-PC.exe" }
+  }
+}
