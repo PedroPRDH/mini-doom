@@ -4571,7 +4571,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v29',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v30',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4583,7 +4583,11 @@ addEventListener('resize',resize);addEventListener('orientationchange',()=>{setT
 function goFS(){try{const d=document.documentElement;if(APK||document.fullscreenElement||!d.requestFullscreen||!matchMedia('(pointer:coarse)').matches||matchMedia('(display-mode: fullscreen)').matches||matchMedia('(display-mode: standalone)').matches)return;const p=d.requestFullscreen({navigationUI:'hide'});if(p&&p.catch)p.catch(()=>{})}catch(e){}}
 
 /* niveles */
-const SVK='md7sv';
+const SVK='md7sv',STK='md7st';
+var runFull=true,PS={kills:0,icon:0,wins:0,lv:0,deaths:0},PEND={kills:0,icon:0,wins:0,lv:0,deaths:0};
+try{const q=JSON.parse(localStorage.getItem(STK)||'{}');if(q.p)Object.assign(PS,q.p);if(q.d)Object.assign(PEND,q.d)}catch(e){}
+function stSave(){try{localStorage.setItem(STK,JSON.stringify({p:PS,d:PEND}))}catch(e){}}
+function stat(k,n){n=n||1;PS[k]+=n;PEND[k]+=n;stSave()}
 function svGet(){try{const v=JSON.parse(localStorage.getItem(SVK)||'null');if(v&&v.l>=0&&v.l<LV.length&&Array.isArray(v.own))return v}catch(e){}return null}
 function svPut(){try{localStorage.setItem(SVK,JSON.stringify({l:lvl,hp:Math.ceil(hp),ar:Math.ceil(ar),ammo:ammo,own:own,cs:cs}))}catch(e){}}
 var startMode=0,selLv=0;
@@ -4608,7 +4612,7 @@ function load(){
  if(L.hg){const hi=free.filter(c=>gh(c[0],c[1])>=1.5);for(let i=0;i<7&&hi.length;i++){const c=hi.splice(rn()*hi.length|0,1)[0];pk.push({k:['h','a','r','a','a','h','r'][i],on:1,x:c[0],y:c[1]})}}
  buildLevel();
 }
-function kill(o){o.a=0;if(o.k==11)boom(o.x,o.y);else{burst(o.x,1,o.y,16,0xaa1010,3);kills++;if(o.k==17){ST.bt=1;SV();for(const q of en)if(q.a&&q.k!=11)q.a=0;for(let j=0;j<4;j++)setTimeout(()=>S('boom',o.x,o.y),j*250);shake=2}if(CH[cs].reg)hp=Math.min(HM(),hp+CH[cs].reg);let mdr=0;if(sawMK&&o.k!=17&&Math.random()<.6){pk.push({k:['h','a','r','h','a'][Math.random()*5|0],on:1,x:o.x,y:o.y});mdr=1;burst(o.x,1,o.y,14,0xaa1010,4)}if(!mdr&&(LV[lvl].fin||LV[lvl].last)&&o.k!=17&&Math.random()<(ST.df==2?.7:.5))pk.push({k:(ST.df==2?['h','a','a','a','a','r']:['h','a','a','r'])[Math.random()*(ST.df==2?6:4)|0],on:1,x:o.x,y:o.y});SX=o.x;SY=o.y;S('die',o.x,o.y)}}
+function kill(o){o.a=0;if(o.k==11)boom(o.x,o.y);else{burst(o.x,1,o.y,16,0xaa1010,3);kills++;stat('kills');if(o.k==17)stat('icon');if(o.k==17){ST.bt=1;SV();for(const q of en)if(q.a&&q.k!=11)q.a=0;for(let j=0;j<4;j++)setTimeout(()=>S('boom',o.x,o.y),j*250);shake=2}if(CH[cs].reg)hp=Math.min(HM(),hp+CH[cs].reg);let mdr=0;if(sawMK&&o.k!=17&&Math.random()<.6){pk.push({k:['h','a','r','h','a'][Math.random()*5|0],on:1,x:o.x,y:o.y});mdr=1;burst(o.x,1,o.y,14,0xaa1010,4)}if(!mdr&&(LV[lvl].fin||LV[lvl].last)&&o.k!=17&&Math.random()<(ST.df==2?.7:.5))pk.push({k:(ST.df==2?['h','a','a','a','a','r']:['h','a','a','r'])[Math.random()*(ST.df==2?6:4)|0],on:1,x:o.x,y:o.y});SX=o.x;SY=o.y;S('die',o.x,o.y)}}
 function boom(x,y,R,D,pl){R=R||2.3;D=D||12;pl=pl===undefined?35:pl;S('boom',x,y);shake=1;bonus=.6;burst(x,.8,y,45,0xff8a20,6);burst(x,.8,y,18,0x666666,3);exI=1;exX=x;exY=y;
  for(const o of en){if(!o.a)continue;const d=Math.hypot(o.x-x,o.y-y);if(d<R){if(o.k==11)kill(o);else{o.hp-=(D*(1-d/R)+1)*(o.sh?(o.k==17?.05:.3):1);o.w=1;o.hurt=.3;if(o.hp<=0)kill(o)}}}
  const d=Math.hypot(px-x,py-y);if(d<R&&pl)hurt(pl*(1-d/R)+3)}
@@ -4667,16 +4671,64 @@ function icon(e,ph,b){const pt=e.pn=((e.pn|0)+1)%4;S(pt==1?'roar':'fb',e.x,e.y);
  else if(pt==2){e.bur=4+ph*2;e.bt=0}
  else{e.spi=2.2+ph*.5;e.s2=0;e.sa=b-1.2}}
 function hurt(n){if(dashT>0)return;n*=DF[ST.df].dm;const a=Math.min(ar,n*.5);ar-=a;hp-=n-a;dmg=1;shake=Math.max(shake,.5);S('hurt');if(hp<=0){hp=0;end('dead')}}
-function end(s){state=s;firing=false;const L=LV[lvl],last=!!L.last;if(s=='win'&&last){ST.done=1;SV();try{localStorage.removeItem(SVK)}catch(e){}}S(s=='dead'?'lose':'win');
+function end(s){state=s;firing=false;const L=LV[lvl],last=!!L.last;if(s=='dead')stat('deaths');else{stat('lv');if(last&&runFull)stat('wins')}fbSync();if(s=='win'&&last){ST.done=1;SV();try{localStorage.removeItem(SVK)}catch(e){}}S(s=='dead'?'lose':'win');
  setTimeout(()=>show(s=='dead'?'HAS MUERTO':last?'¡GANASTE!':(L.nt||'¡NIVEL '+(lvl+1)+' COMPLETO!'),s=='dead'?'Los demonios ganaron esta vez.':last?'Derrotaste a las legiones del Infierno en la Tierra. ¡La humanidad está a salvo! DESBLOQUEADO: en el menú principal puedes rejugar cualquier nivel con todas las armas y las botas desde el inicio.':(L.nx||'Siguiente: nivel '+(lvl+2)+' de '+LV.length+'.'),s=='dead'?'REINTENTAR':last?'JUGAR DE NUEVO':(L.nb||'SIGUIENTE NIVEL')),s=='dead'?900:700)}
-const mcB=document.createElement('button'),mlB=document.createElement('button'),mnB=document.createElement('button');mcB.className=mlB.className=mnB.className='s2';mcB.style.display=mlB.style.display=mnB.style.display='none';$('mb').after(mcB,mnB,mlB);
-function titleBtns(){const sv=svGet(),t=state=='title',d=t&&ST.done;mcB.style.display=t&&sv?'block':'none';mnB.style.display=mlB.style.display=d?'block':'none';if(sv)mcB.textContent='CONTINUAR · NIVEL '+(sv.l+1);const T=LV[selLv].ti;mnB.textContent='NIVEL '+(selLv+1)+(T?' · '+T[1]:'')+' ▸';mlB.textContent='REJUGAR (TODAS LAS ARMAS Y BOTAS)'}
+/* ===== cuentas online y clasificatoria (Firebase) ===== */
+const FBCFG=/*FBCFG*/null;
+var FB={ok:0,user:null,db:null,auth:null,err:'',busy:0,name:''};
+const FBV='10.12.2',FBJS=['app','auth','firestore'].map(n=>'https://www.gstatic.com/firebasejs/'+FBV+'/firebase-'+n+'-compat.js');
+function fbLoad(i,cb,er){if(i>=FBJS.length)return cb();const sc=document.createElement('script');sc.src=FBJS[i];sc.onload=()=>fbLoad(i+1,cb,er);sc.onerror=()=>er();document.head.appendChild(sc)}
+function fbInit(cb){if(!FBCFG){cb&&cb();return}if(FB.ok){cb&&cb();return}if(FB.busy){FB.q=(FB.q||[]).concat(cb||[]);return}FB.busy=1;
+ const done=()=>{FB.busy=0;const q=FB.q||[];FB.q=[];cb&&cb();q.forEach(f=>f&&f())};
+ const go=()=>{try{if(!firebase.apps.length)firebase.initializeApp(FBCFG);FB.auth=firebase.auth();FB.db=firebase.firestore();FB.ok=1;FB.err='';FB.auth.onAuthStateChanged(u=>{FB.user=u;FB.name=u?(u.displayName||(u.email||'Jugador').split('@')[0]).replace(/[^\wÁÉÍÓÚÑáéíóúñ \-]/g,'').slice(0,16)||'Jugador':'';if(u)fbSync(true);accUI()});done()}catch(e){FB.err='No se pudo iniciar la conexión.';done()}};
+ if(window.firebase)go();else fbLoad(0,go,()=>{FB.err='Sin conexión: la clasificatoria necesita internet.';done()})}
+function pSum(){return PEND.kills+PEND.icon+PEND.wins+PEND.lv+PEND.deaths}
+var fbSyncing=0;
+function fbSync(force){if(!FB.ok||!FB.user||fbSyncing||(!force&&!pSum()))return;fbSyncing=1;const snap=Object.assign({},PEND),inc=firebase.firestore.FieldValue.increment,d={name:FB.name||'Jugador',upd:firebase.firestore.FieldValue.serverTimestamp()};
+ for(const k in snap){d[k]=inc(snap[k]);PEND[k]-=snap[k]}stSave();
+ FB.db.collection('players').doc(FB.user.uid).set(d,{merge:true}).then(()=>{fbSyncing=0;lbTab&&lbPanel.style.display=='block'&&lbLoad()}).catch(e=>{fbSyncing=0;for(const k in snap)PEND[k]+=snap[k];stSave();FB.err='No se pudo guardar tu progreso online ('+((e&&e.code)||'error')+').';accUI()})}
+setInterval(()=>fbSync(),60000);
+const FBE={'auth/invalid-email':'El correo no es válido.','auth/missing-password':'Escribe una contraseña.','auth/weak-password':'La contraseña debe tener al menos 6 caracteres.','auth/email-already-in-use':'Ese correo ya tiene una cuenta. Usa ENTRAR.','auth/invalid-credential':'Correo o contraseña incorrectos.','auth/wrong-password':'Correo o contraseña incorrectos.','auth/user-not-found':'Correo o contraseña incorrectos.','auth/too-many-requests':'Demasiados intentos. Espera un momento.','auth/network-request-failed':'Sin conexión.','auth/popup-closed-by-user':'Se cerró la ventana de Google.','auth/popup-blocked':'El navegador bloqueó la ventana de Google.','auth/operation-not-supported-in-this-environment':'Este método no funciona aquí. Usa correo y contraseña.','auth/unauthorized-domain':'Este dominio no está autorizado en Firebase.'};
+const fbMsg=e=>FBE[e&&e.code]||('Error: '+((e&&e.code)||'desconocido'));
+var lbTab='kills',lbPanel,accBox,lbList,stBox;
+const LBT=[['kills','MONSTRUOS'],['wins','JUEGOS COMPLETADOS'],['icon','ICONO DEL PECADO'],['lv','NIVELES'],['deaths','MUERTES']];
+(function(){const st=document.createElement('style');st.textContent='#lbp{position:fixed;inset:0;z-index:40;display:none;background:#080202;color:#fff;font-family:system-ui,sans-serif;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;-webkit-user-select:text;user-select:text}#lbp .w{max-width:520px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 30px}#lbp h2{font:400 26px Impact,"Arial Narrow",sans-serif;letter-spacing:2px;color:#ff3b2a;margin:0 0 8px}#lbp h3{font-size:13px;letter-spacing:1px;margin:16px 0 6px;color:#ffd24a}#lbp .x{position:absolute;right:14px;top:calc(10px + env(safe-area-inset-top,0px));font-size:15px;padding:6px 12px;border:1px solid #888;background:#222;color:#fff;border-radius:6px}#lbp input{display:block;width:100%;box-sizing:border-box;margin:5px 0;padding:9px;font-size:15px;background:#1c1010;color:#fff;border:1px solid #666;border-radius:6px}#lbp button.k{margin:4px 4px 4px 0;padding:9px 12px;font-size:13px;background:#b01c10;color:#fff;border:0;border-radius:6px}#lbp button.g{background:#3a3a3a}#lbp .m{font-size:13px;opacity:.85;line-height:1.4;margin:6px 0}#lbp .e{color:#ff8a7a}#lbp .st{display:grid;grid-template-columns:1fr 1fr;gap:6px}#lbp .st div{background:#1a0e0e;border:1px solid #442;border-radius:6px;padding:8px;font-size:12px}#lbp .st b{display:block;font-size:20px;color:#ffd24a}#lbp .tb{display:flex;flex-wrap:wrap;gap:4px}#lbp .tb button{padding:7px 9px;font-size:11px;background:#2a1a1a;color:#ddd;border:1px solid #555;border-radius:6px}#lbp .tb button.on{background:#b01c10;color:#fff;border-color:#f66}#lbp ol{list-style:none;padding:0;margin:8px 0}#lbp li{display:flex;gap:8px;padding:7px 8px;border-bottom:1px solid #2a1a1a;font-size:14px}#lbp li i{font-style:normal;width:26px;color:#999}#lbp li span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#lbp li.me{background:rgba(255,210,74,.12)}';document.head.appendChild(st);
+ lbPanel=document.createElement('div');lbPanel.id='lbp';lbPanel.innerHTML='<button class="x" id="lbx">CERRAR ✕</button><div class="w"><h2>CUENTA Y CLASIFICATORIA</h2><div id="lbacc"></div><h3>TUS ESTADÍSTICAS</h3><div class="st" id="lbst"></div><h3>CLASIFICATORIA GLOBAL</h3><div class="tb" id="lbtb"></div><ol id="lbls"></ol></div>';
+ ['keydown','keyup','keypress'].forEach(t=>lbPanel.addEventListener(t,e=>e.stopPropagation()));document.body.appendChild(lbPanel);
+ accBox=lbPanel.querySelector('#lbacc');lbList=lbPanel.querySelector('#lbls');stBox=lbPanel.querySelector('#lbst');
+ $('lbx').onclick=()=>{lbPanel.style.display='none'};
+ const tb=lbPanel.querySelector('#lbtb');LBT.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.dataset.k=k;b.onclick=()=>{lbTab=k;lbLoad()};tb.appendChild(b)})})();
+function stUI(){const F=[['kills','Monstruos eliminados'],['wins','Juegos completados'],['icon','Icono del Pecado vencido'],['lv','Niveles superados'],['deaths','Muertes']];stBox.innerHTML=F.map(([k,n])=>'<div><b>'+PS[k]+'</b>'+n+'</div>').join('')}
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function accUI(msg,isErr){if(!accBox)return;stUI();const mm=(msg?'<p class="m '+(isErr?'e':'')+'">'+esc(msg)+'</p>':'')+(FB.err?'<p class="m e">'+esc(FB.err)+'</p>':'');
+ if(!FBCFG){accBox.innerHTML='<p class="m">Las cuentas online todavía no están activadas en esta versión. Tus estadísticas se guardan en este dispositivo y se subirán cuando se active.</p>';return}
+ if(!FB.ok){accBox.innerHTML='<p class="m">'+(FB.busy?'Conectando…':'Sin conexión con el servidor.')+'</p>'+mm;return}
+ if(FB.user){accBox.innerHTML='<p class="m">Sesión iniciada como <b>'+esc(FB.name)+'</b><br>'+esc(FB.user.email||'')+'</p><input id="lbnm" maxlength="16" placeholder="Nombre en la clasificatoria" value="'+esc(FB.name)+'"><button class="k" id="lbsn">GUARDAR NOMBRE</button><button class="k g" id="lbso">CERRAR SESIÓN</button>'+mm;
+  $('lbsn').onclick=()=>{const n=$('lbnm').value.replace(/[^\wÁÉÍÓÚÑáéíóúñ \-]/g,'').trim().slice(0,16);if(!n){accUI('Escribe un nombre válido.',1);return}FB.name=n;FB.user.updateProfile({displayName:n}).catch(()=>{});FB.db.collection('players').doc(FB.user.uid).set({name:n},{merge:true}).then(()=>{accUI('Nombre guardado.');lbLoad()}).catch(e=>accUI(fbMsg(e),1))};
+  $('lbso').onclick=()=>{FB.auth.signOut()}}
+ else{const web=!(APK||/Electron/.test(navigator.userAgent));
+  accBox.innerHTML='<p class="m">Inicia sesión para aparecer en la clasificatoria. Puedes jugar sin cuenta.</p>'+(web?'<button class="k" id="lbgo" style="width:100%">ENTRAR CON GOOGLE</button>':'')+'<input id="lbem" type="email" placeholder="Correo electrónico" autocomplete="email"><input id="lbpw" type="password" placeholder="Contraseña (mín. 6)" autocomplete="current-password"><input id="lbnn" maxlength="16" placeholder="Nombre para la clasificatoria (al crear cuenta)"><button class="k" id="lbin">ENTRAR</button><button class="k" id="lbcr">CREAR CUENTA</button><button class="k g" id="lbfg">OLVIDÉ MI CONTRASEÑA</button>'+(web?'':'<p class="m">En la app y en la versión de PC el acceso es con correo y contraseña. Con Google, entra desde la web.</p>')+mm;
+  const ev=()=>$('lbem').value.trim(),pw=()=>$('lbpw').value;
+  if(web)$('lbgo').onclick=()=>{FB.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>accUI(fbMsg(e),1))};
+  $('lbin').onclick=()=>FB.auth.signInWithEmailAndPassword(ev(),pw()).catch(e=>accUI(fbMsg(e),1));
+  $('lbcr').onclick=()=>{const n=$('lbnn').value.replace(/[^\wÁÉÍÓÚÑáéíóúñ \-]/g,'').trim().slice(0,16);FB.auth.createUserWithEmailAndPassword(ev(),pw()).then(c=>{const nm=n||ev().split('@')[0].slice(0,16);FB.name=nm;return c.user.updateProfile({displayName:nm}).then(()=>{try{c.user.sendEmailVerification()}catch(e){}FB.name=nm;fbSync(true);accUI('Cuenta creada. Te enviamos un correo de verificación.')})}).catch(e=>accUI(fbMsg(e),1))};
+  $('lbfg').onclick=()=>{if(!ev()){accUI('Escribe tu correo arriba y vuelve a tocar.',1);return}FB.auth.sendPasswordResetEmail(ev()).then(()=>accUI('Te enviamos un correo para restablecer la contraseña.')).catch(e=>accUI(fbMsg(e),1))}}}
+function lbLoad(){stUI();lbPanel.querySelectorAll('.tb button').forEach(b=>b.classList.toggle('on',b.dataset.k==lbTab));
+ if(!FBCFG){lbList.innerHTML='<li><span>La clasificatoria se activará pronto.</span></li>';return}
+ if(!FB.ok){lbList.innerHTML='<li><span>'+(FB.busy?'Conectando…':'Sin conexión.')+'</span></li>';return}
+ lbList.innerHTML='<li><span>Cargando…</span></li>';const k=lbTab;
+ FB.db.collection('players').orderBy(k,'desc').limit(20).get().then(q=>{if(k!=lbTab)return;if(q.empty){lbList.innerHTML='<li><span>Aún no hay jugadores en esta categoría.</span></li>';return}let i=0;lbList.innerHTML=q.docs.map(d=>{const v=d.data();i++;return'<li class="'+(FB.user&&d.id==FB.user.uid?'me':'')+'"><i>'+i+'</i><span>'+esc(v.name||'Jugador')+'</span><b>'+(v[k]|0)+'</b></li>'}).join('')}).catch(e=>{lbList.innerHTML='<li><span>No se pudo cargar ('+esc((e&&e.code)||'error')+').</span></li>'})}
+function openAcc(){lbPanel.style.display='block';lbPanel.scrollTop=0;accUI();lbLoad();fbInit(()=>{accUI();lbLoad()})}
+if(FBCFG)setTimeout(()=>fbInit(),2500);
+const accB=document.createElement('button');accB.className='s2';accB.textContent='CUENTA Y CLASIFICATORIA';accB.onclick=openAcc;
+const mcB=document.createElement('button'),mlB=document.createElement('button'),mnB=document.createElement('button');mcB.className=mlB.className=mnB.className='s2';mcB.style.display=mlB.style.display=mnB.style.display='none';$('mb').after(mcB,mnB,mlB,accB);
+function titleBtns(){accB.textContent='CUENTA Y CLASIFICATORIA'+(FB.user?' · '+FB.name:'');const sv=svGet(),t=state=='title',d=t&&ST.done;mcB.style.display=t&&sv?'block':'none';mnB.style.display=mlB.style.display=d?'block':'none';if(sv)mcB.textContent='CONTINUAR · NIVEL '+(sv.l+1);const T=LV[selLv].ti;mnB.textContent='NIVEL '+(selLv+1)+(T?' · '+T[1]:'')+' ▸';mlB.textContent='REJUGAR (TODAS LAS ARMAS Y BOTAS)'}
 mcB.onclick=()=>{startMode=1;$('mb').onclick()};
 mnB.onclick=()=>{selLv=(selLv+1)%LV.length;titleBtns()};
 mlB.onclick=()=>{startMode=2;$('mb').onclick()};
 function show(t,p,b){diag();$('cw').style.display=state=='title'||(state=='win'&&LV[lvl].last)?'block':'none';titleBtns();if(state=='title'&&svGet()&&b=='JUGAR')b='NUEVA PARTIDA';$('mt').textContent=t;$('mp').textContent=p;$('mb').textContent=b;$('msg').style.display='flex'}
 $('mb').onclick=()=>{const retry=state=='dead';goFS();if(state=='title'||state=='pause'||state=='win'||state=='dead')setTimeout(()=>{if(state=='play')lockPtr()},0);$('msg').style.display='none';$('set').style.display='none';if(state=='pause'){state='play';return}
- if(state=='title'){if(startMode==1){const v=svGet();if(v){cs=v.cs|0;lvl=v.l;hp=v.hp;ar=v.ar;ammo=v.ammo;own=v.own;wi=0}else newGame()}else if(startMode==2){newGame();lvl=selLv;own=[1,1,1,1,1,1,1,1];ammo=ST.df==2?340:150;ST.bt=1;SV();wi=1}else newGame();startMode=0}else if(state=='win'){if(lvl<LV.length-1){lvl++;hp=Math.min(HM(),hp+30)}else newGame()}
+ if(state=='title'){runFull=startMode!=2;if(startMode==1){const v=svGet();if(v){cs=v.cs|0;lvl=v.l;hp=v.hp;ar=v.ar;ammo=v.ammo;own=v.own;wi=0}else newGame()}else if(startMode==2){newGame();lvl=selLv;own=[1,1,1,1,1,1,1,1];ammo=ST.df==2?340:150;ST.bt=1;SV();wi=1}else newGame();startMode=0}else if(state=='win'){if(lvl<LV.length-1){lvl++;hp=Math.min(HM(),hp+30)}else newGame()}
  else if(state=='dead'){hp=HM();ar=CH[cs].ar;own=sOwn.slice();ammo=Math.max(sAmmo,30);wi=0}
  load();state='play';svPut();musLvl();S('click');if(LV[lvl].fin&&!retry&&!ST.ci)startCine('intro');else if(LV[lvl].ti&&!LV[lvl].fin){const T0=LV[lvl].ti,l0=lvl;cTitle(T0[0],T0[1]);setTimeout(()=>{if(lvl==l0&&state=='play')cTitle('')},3200)}};
 const prevW=()=>{for(let i=1;i<8;i++){const j=(wi-i+8)%8;if(own[j]){wi=j;fireT=0;S('click');break}}};

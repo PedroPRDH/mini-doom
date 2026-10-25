@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /players/{uid} {
+      // La clasificatoria es pública
+      allow read: if true;
+
+      function nombreValido() {
+        return request.resource.data.name is string
+            && request.resource.data.name.size() >= 1
+            && request.resource.data.name.size() <= 16;
+      }
+      // cada contador solo puede subir, y con un tope razonable por escritura
+      function sube(c, tope) {
+        return request.resource.data.get(c, 0) is int
+            && request.resource.data.get(c, 0) >= resource.data.get(c, 0)
+            && request.resource.data.get(c, 0) - resource.data.get(c, 0) <= tope;
+      }
+      allow create: if request.auth != null && request.auth.uid == uid && nombreValido()
+          && request.resource.data.get('kills', 0) <= 3000
+          && request.resource.data.get('wins', 0) <= 20
+          && request.resource.data.get('icon', 0) <= 50
+          && request.resource.data.get('lv', 0) <= 200
+          && request.resource.data.get('deaths', 0) <= 1000;
+      allow update: if request.auth != null && request.auth.uid == uid && nombreValido()
+          && sube('kills', 3000) && sube('wins', 20) && sube('icon', 50)
+          && sube('lv', 200) && sube('deaths', 1000);
+      allow delete: if false;
+    }
+  }
+}
