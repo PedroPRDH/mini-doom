@@ -16,7 +16,7 @@ Cada push a `main` regenera automáticamente la web, el APK y el `.exe`.
 
 ## Contenido
 
-- **10 niveles**: 5 en el Infierno (con jefe: el Icono del Pecado) y 5 en la Tierra (ciudad, parque, autopista, azotea).
+- **10 niveles**: 6 en el Infierno (el sexto es el jefe: el Icono del Pecado) y 4 en la Tierra (ciudad, parque, autopista, azotea).
 - **22 tipos de enemigos**, con IA por mapa de flujo, esquive y alerta en grupo.
 - **8 armas**: pistola, escopeta, ametralladora, plasma, superescopeta, lanzacohetes, BFG y **motosierra** (corte continuo cuerpo a cuerpo; lo que mata con ella suelta vida, munición o armadura con más frecuencia).
 - **Botas** (se desbloquean al vencer al Icono del Pecado): doble salto y deslizamiento / salto por las paredes. Los niveles de la Tierra son multinivel y están pensados para esa movilidad.
