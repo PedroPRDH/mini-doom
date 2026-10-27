@@ -4571,7 +4571,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v30',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v31',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4674,7 +4674,7 @@ function hurt(n){if(dashT>0)return;n*=DF[ST.df].dm;const a=Math.min(ar,n*.5);ar-
 function end(s){state=s;firing=false;const L=LV[lvl],last=!!L.last;if(s=='dead')stat('deaths');else{stat('lv');if(last&&runFull)stat('wins')}fbSync();if(s=='win'&&last){ST.done=1;SV();try{localStorage.removeItem(SVK)}catch(e){}}S(s=='dead'?'lose':'win');
  setTimeout(()=>show(s=='dead'?'HAS MUERTO':last?'¡GANASTE!':(L.nt||'¡NIVEL '+(lvl+1)+' COMPLETO!'),s=='dead'?'Los demonios ganaron esta vez.':last?'Derrotaste a las legiones del Infierno en la Tierra. ¡La humanidad está a salvo! DESBLOQUEADO: en el menú principal puedes rejugar cualquier nivel con todas las armas y las botas desde el inicio.':(L.nx||'Siguiente: nivel '+(lvl+2)+' de '+LV.length+'.'),s=='dead'?'REINTENTAR':last?'JUGAR DE NUEVO':(L.nb||'SIGUIENTE NIVEL')),s=='dead'?900:700)}
 /* ===== cuentas online y clasificatoria (Firebase) ===== */
-const FBCFG=/*FBCFG*/null;
+const FBCFG={apiKey:"AIzaSyDtL-PKPmAWvG6EBaZHxL3I-1nUl2jgCrg",authDomain:"mini-doom.firebaseapp.com",projectId:"mini-doom",storageBucket:"mini-doom.firebasestorage.app",messagingSenderId:"80575471992",appId:"1:80575471992:web:0e7b945bfcd71ad340288d"};
 var FB={ok:0,user:null,db:null,auth:null,err:'',busy:0,name:''};
 const FBV='10.12.2',FBJS=['app','auth','firestore'].map(n=>'https://www.gstatic.com/firebasejs/'+FBV+'/firebase-'+n+'-compat.js');
 function fbLoad(i,cb,er){if(i>=FBJS.length)return cb();const sc=document.createElement('script');sc.src=FBJS[i];sc.onload=()=>fbLoad(i+1,cb,er);sc.onerror=()=>er();document.head.appendChild(sc)}
