@@ -4582,7 +4582,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v35',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v36',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4595,7 +4595,7 @@ function goFS(){try{const d=document.documentElement;if(APK||document.fullscreen
 
 /* niveles */
 const SVK='md7sv',STK='md7st';
-var runFull=true,PS={kills:0,icon:0,wins:0,lv:0,deaths:0},PEND={kills:0,icon:0,wins:0,lv:0,deaths:0};
+var runFull=true,PS={kills:0,icon:0,wins:0,lv:0,deaths:0,dyn:0,cab:0},PEND={kills:0,icon:0,wins:0,lv:0,deaths:0,dyn:0,cab:0};
 try{const q=JSON.parse(localStorage.getItem(STK)||'{}');if(q.p)Object.assign(PS,q.p);if(q.d)Object.assign(PEND,q.d)}catch(e){}
 function stSave(){try{localStorage.setItem(STK,JSON.stringify({p:PS,d:PEND}))}catch(e){}}
 function stat(k,n){n=n||1;PS[k]+=n;PEND[k]+=n;stSave()}
@@ -4623,7 +4623,7 @@ function load(){
  if(L.hg){const hi=free.filter(c=>gh(c[0],c[1])>=1.5);for(let i=0;i<7&&hi.length;i++){const c=hi.splice(rn()*hi.length|0,1)[0];pk.push({k:['h','a','r','a','a','h','r'][i],on:1,x:c[0],y:c[1]})}}
  buildLevel();if(L.dyn)dyMk(en.find(e=>e.k==22));
 }
-function kill(o){o.a=0;if(o.k==11)boom(o.x,o.y);else{burst(o.x,1,o.y,16,0xaa1010,3);kills++;stat('kills');if(o.k==17)stat('icon');if(o.k==22){for(const q of en)if(q.a&&q.k!=11)q.a=0;if(DY)DY.g.visible=false;for(let j=0;j<4;j++)setTimeout(()=>S('boom',o.x,o.y),j*250);shake=2}if(o.k==17){ST.bt=1;SV();for(const q of en)if(q.a&&q.k!=11)q.a=0;for(let j=0;j<4;j++)setTimeout(()=>S('boom',o.x,o.y),j*250);shake=2}if(CH[cs].reg)hp=Math.min(HM(),hp+CH[cs].reg);let mdr=0;if(sawMK&&o.k!=17&&Math.random()<.6){pk.push({k:['h','a','r','h','a'][Math.random()*5|0],on:1,x:o.x,y:o.y});mdr=1;burst(o.x,1,o.y,14,0xaa1010,4)}if(!mdr&&(LV[lvl].fin||LV[lvl].last)&&o.k!=17&&Math.random()<(ST.df==2?.7:.5))pk.push({k:(ST.df==2?['h','a','a','a','a','r']:['h','a','a','r'])[Math.random()*(ST.df==2?6:4)|0],on:1,x:o.x,y:o.y});SX=o.x;SY=o.y;S('die',o.x,o.y)}}
+function kill(o){o.a=0;if(o.k==11)boom(o.x,o.y);else{burst(o.x,1,o.y,16,0xaa1010,3);kills++;stat('kills');if(o.k==17)stat('icon');if(o.k==22)stat('dyn');if(o.k==22){for(const q of en)if(q.a&&q.k!=11)q.a=0;if(DY)DY.g.visible=false;for(let j=0;j<4;j++)setTimeout(()=>S('boom',o.x,o.y),j*250);shake=2}if(o.k==17){ST.bt=1;SV();for(const q of en)if(q.a&&q.k!=11)q.a=0;for(let j=0;j<4;j++)setTimeout(()=>S('boom',o.x,o.y),j*250);shake=2}if(CH[cs].reg)hp=Math.min(HM(),hp+CH[cs].reg);let mdr=0;if(sawMK&&o.k!=17&&Math.random()<.6){pk.push({k:['h','a','r','h','a'][Math.random()*5|0],on:1,x:o.x,y:o.y});mdr=1;burst(o.x,1,o.y,14,0xaa1010,4)}if(!mdr&&(LV[lvl].fin||LV[lvl].last)&&o.k!=17&&Math.random()<(ST.df==2?.7:.5))pk.push({k:(ST.df==2?['h','a','a','a','a','r']:['h','a','a','r'])[Math.random()*(ST.df==2?6:4)|0],on:1,x:o.x,y:o.y});SX=o.x;SY=o.y;S('die',o.x,o.y)}}
 /* ===== EL DÍNAMO: arena, nodos de cable, ondas, suelo electrificado ===== */
 var DY=null;
 const DYN=[[20.0,1.08,2.2],[38.92,20.0,2.2],[20.0,38.92,2.2],[1.08,20.0,2.2]],DYORD=[0,2,1,3];
@@ -4644,7 +4644,7 @@ function dySpawn(D,ph){const alive=en.filter(q=>q.a&&q.k!=22&&q.k!=11).length;if
  for(let i=0;i<n;i++)for(let t=0;t<30;t++){const a=Math.random()*6.283,r=8+Math.random()*9,x=DYX+Math.cos(a)*r,y=DYY+Math.sin(a)*r;if(x>1.5&&x<MW-1.5&&y>1.5&&y<MH-1.5&&!hit(x,y,.3)&&Math.hypot(x-px,y-py)>4){en.push(mkE(ks[Math.random()*ks.length|0],x,y,1));tot++;break}}S('alert',DYX,DYY)}
 function dyShot(){const D=DY;if(!D||D.st!='shield'||!D.e.a)return;const ex=px,ey=py,ez=pz+1.2,cp=Math.cos(pitch),dx=Math.cos(ang)*cp,dy=Math.sin(ang)*cp,dz=Math.sin(pitch);
  D.ord.slice(0,D.na).forEach(i=>{const n=D.n[i];if(n.ok)return;const vx_=n.x-ex,vy_=n.y-ey,vz_=n.z-ez,d=Math.hypot(vx_,vy_,vz_);if(d<.5||d>(wi==7?3.6:34))return;
-  const c=(vx_*dx+vy_*dy+vz_*dz)/d;if(Math.acos(Math.min(1,c))<.05+1.1/d){n.p=Math.min(1,n.p+.2);S('dyn');burst(n.x,n.z,n.y,5,0xffd040,3);if(n.p>=1){n.ok=1;n.okT=0;S('dyz');burst(n.x,n.z,n.y,16,0x66ff99,4);shake=Math.max(shake,.3)}}})}
+  const c=(vx_*dx+vy_*dy+vz_*dz)/d;if(Math.acos(Math.min(1,c))<.05+1.1/d){n.p=Math.min(1,n.p+.2);S('dyn');burst(n.x,n.z,n.y,5,0xffd040,3);if(n.p>=1){n.ok=1;n.okT=0;stat('cab');S('dyz');burst(n.x,n.z,n.y,16,0x66ff99,4);shake=Math.max(shake,.3)}}})}
 function dyTick(e,dt){const D=DY;if(!D||!e.a)return;
  e.hurt=Math.max(0,e.hurt-dt);e.w=1;D.t+=dt;const ph=D.ph,bz=e.gz===undefined?gh(DYX,DYY):e.gz,cx=DYX,cy=DYY,t=D.t;
  D.na=[2,3,4][ph];const act=i=>D.ord.indexOf(i)<D.na&&D.ord.indexOf(i)>=0;
@@ -4652,7 +4652,7 @@ function dyTick(e,dt){const D=DY;if(!D||!e.a)return;
  const shield=D.st=='shield';e.sh=shield;
  D.n.forEach((n,i)=>{const on=act(i);
   if(shield&&on&&!n.ok){const near=wallN&&!pgr&&Math.hypot(px-n.x,py-n.y)<2.2&&pz>1.0&&pz<3.6;
-   if(near){n.p=Math.min(1,n.p+dt/1.0);D.rt-=dt;if(D.rt<=0){D.rt=.14;S('dyn');burst(n.x,n.z,n.y,2,0x9fe0ff,2)}if(n.p>=1){n.ok=1;n.okT=0;S('dyz');burst(n.x,n.z,n.y,16,0x66ff99,4);shake=Math.max(shake,.3)}}
+   if(near){n.p=Math.min(1,n.p+dt/1.0);D.rt-=dt;if(D.rt<=0){D.rt=.14;S('dyn');burst(n.x,n.z,n.y,2,0x9fe0ff,2)}if(n.p>=1){n.ok=1;n.okT=0;stat('cab');S('dyz');burst(n.x,n.z,n.y,16,0x66ff99,4);shake=Math.max(shake,.3)}}
    else n.p=Math.max(0,n.p-dt*.1)}
   if(n.ok&&shield){n.okT+=dt;if(n.okT>36){n.ok=0;n.p=0;S('dyz');burst(n.x,n.z,n.y,12,0xff6030,4)}}
   const col=!on?0x2c333c:n.ok?0x44ff88:n.p>0?0xffd040:(Math.sin(t*20+i)>0?0xff4020:0xff9030);
@@ -4752,7 +4752,7 @@ function fbInit(cb){if(!FBCFG){cb&&cb();return}if(FB.ok){cb&&cb();return}if(FB.b
  const done=()=>{FB.busy=0;const q=FB.q||[];FB.q=[];cb&&cb();q.forEach(f=>f&&f())};
  const go=()=>{try{if(!firebase.apps.length)firebase.initializeApp(FBCFG);FB.auth=firebase.auth();FB.db=firebase.firestore();FB.ok=1;FB.err='';FB.auth.onAuthStateChanged(u=>{FB.user=u;FB.name=u?(u.displayName||(u.email||'Jugador').split('@')[0]).replace(/[^\wÁÉÍÓÚÑáéíóúñ \-]/g,'').slice(0,16)||'Jugador':'';if(u)fbSync(true);accUI()});done()}catch(e){FB.err='No se pudo iniciar la conexión.';done()}};
  if(window.firebase)go();else fbLoad(0,go,()=>{FB.err='Sin conexión: la clasificatoria necesita internet.';done()})}
-function pSum(){return PEND.kills+PEND.icon+PEND.wins+PEND.lv+PEND.deaths}
+function pSum(){return PEND.kills+PEND.icon+PEND.wins+PEND.lv+PEND.deaths+PEND.dyn+PEND.cab}
 var fbSyncing=0;
 function fbSync(force){if(!FB.ok||!FB.user||fbSyncing||(!force&&!pSum()))return;fbSyncing=1;const snap=Object.assign({},PEND),inc=firebase.firestore.FieldValue.increment,d={name:FB.name||'Jugador',upd:firebase.firestore.FieldValue.serverTimestamp()};
  for(const k in snap){d[k]=inc(snap[k]);PEND[k]-=snap[k]}stSave();
@@ -4761,14 +4761,14 @@ setInterval(()=>fbSync(),60000);
 const FBE={'auth/invalid-email':'El correo no es válido.','auth/missing-password':'Escribe una contraseña.','auth/weak-password':'La contraseña debe tener al menos 6 caracteres.','auth/email-already-in-use':'Ese correo ya tiene una cuenta. Usa ENTRAR.','auth/invalid-credential':'Correo o contraseña incorrectos.','auth/wrong-password':'Correo o contraseña incorrectos.','auth/user-not-found':'Correo o contraseña incorrectos.','auth/too-many-requests':'Demasiados intentos. Espera un momento.','auth/network-request-failed':'Sin conexión.','auth/popup-closed-by-user':'Se cerró la ventana de Google.','auth/popup-blocked':'El navegador bloqueó la ventana de Google.','auth/operation-not-supported-in-this-environment':'Este método no funciona aquí. Usa correo y contraseña.','auth/unauthorized-domain':'Este dominio no está autorizado en Firebase.'};
 const fbMsg=e=>FBE[e&&e.code]||('Error: '+((e&&e.code)||'desconocido'));
 var lbTab='kills',lbPanel,accBox,lbList,stBox;
-const LBT=[['kills','MONSTRUOS'],['wins','JUEGOS COMPLETADOS'],['icon','ICONO DEL PECADO'],['lv','NIVELES'],['deaths','MUERTES']];
+const LBT=[['kills','MONSTRUOS'],['wins','JUEGOS COMPLETADOS'],['icon','ICONO DEL PECADO'],['dyn','EL DÍNAMO'],['cab','CABLES'],['lv','NIVELES'],['deaths','MUERTES']];
 (function(){const st=document.createElement('style');st.textContent='#lbp{position:fixed;inset:0;z-index:40;display:none;background:#080202;color:#fff;font-family:system-ui,sans-serif;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;-webkit-user-select:text;user-select:text}#lbp .w{max-width:520px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 30px}#lbp h2{font:400 26px Impact,"Arial Narrow",sans-serif;letter-spacing:2px;color:#ff3b2a;margin:0 0 8px}#lbp h3{font-size:13px;letter-spacing:1px;margin:16px 0 6px;color:#ffd24a}#lbp .x{position:absolute;right:14px;top:calc(10px + env(safe-area-inset-top,0px));font-size:15px;padding:6px 12px;border:1px solid #888;background:#222;color:#fff;border-radius:6px}#lbp input{display:block;width:100%;box-sizing:border-box;margin:5px 0;padding:9px;font-size:15px;background:#1c1010;color:#fff;border:1px solid #666;border-radius:6px}#lbp button.k{margin:4px 4px 4px 0;padding:9px 12px;font-size:13px;background:#b01c10;color:#fff;border:0;border-radius:6px}#lbp button.g{background:#3a3a3a}#lbp .m{font-size:13px;opacity:.85;line-height:1.4;margin:6px 0}#lbp .e{color:#ff8a7a}#lbp .st{display:grid;grid-template-columns:1fr 1fr;gap:6px}#lbp .st div{background:#1a0e0e;border:1px solid #442;border-radius:6px;padding:8px;font-size:12px}#lbp .st b{display:block;font-size:20px;color:#ffd24a}#lbp .tb{display:flex;flex-wrap:wrap;gap:4px}#lbp .tb button{padding:7px 9px;font-size:11px;background:#2a1a1a;color:#ddd;border:1px solid #555;border-radius:6px}#lbp .tb button.on{background:#b01c10;color:#fff;border-color:#f66}#lbp ol{list-style:none;padding:0;margin:8px 0}#lbp li{display:flex;gap:8px;padding:7px 8px;border-bottom:1px solid #2a1a1a;font-size:14px}#lbp li i{font-style:normal;width:26px;color:#999}#lbp li span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#lbp li.me{background:rgba(255,210,74,.12)}';document.head.appendChild(st);
  lbPanel=document.createElement('div');lbPanel.id='lbp';lbPanel.innerHTML='<button class="x" id="lbx">CERRAR ✕</button><div class="w"><h2>CUENTA Y CLASIFICATORIA</h2><div id="lbacc"></div><h3>TUS ESTADÍSTICAS</h3><div class="st" id="lbst"></div><h3>CLASIFICATORIA GLOBAL</h3><div class="tb" id="lbtb"></div><ol id="lbls"></ol></div>';
  ['keydown','keyup','keypress'].forEach(t=>lbPanel.addEventListener(t,e=>e.stopPropagation()));document.body.appendChild(lbPanel);
  accBox=lbPanel.querySelector('#lbacc');lbList=lbPanel.querySelector('#lbls');stBox=lbPanel.querySelector('#lbst');
  $('lbx').onclick=()=>{lbPanel.style.display='none'};
  const tb=lbPanel.querySelector('#lbtb');LBT.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.dataset.k=k;b.onclick=()=>{lbTab=k;lbLoad()};tb.appendChild(b)})})();
-function stUI(){const F=[['kills','Monstruos eliminados'],['wins','Juegos completados'],['icon','Icono del Pecado vencido'],['lv','Niveles superados'],['deaths','Muertes']];stBox.innerHTML=F.map(([k,n])=>'<div><b>'+PS[k]+'</b>'+n+'</div>').join('')}
+function stUI(){const F=[['kills','Monstruos eliminados'],['wins','Juegos completados'],['icon','Icono del Pecado vencido'],['dyn','El Dínamo vencido'],['cab','Cables reparados'],['lv','Niveles superados'],['deaths','Muertes']];stBox.innerHTML=F.map(([k,n])=>'<div><b>'+PS[k]+'</b>'+n+'</div>').join('')}
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function accUI(msg,isErr){if(!accBox)return;stUI();const mm=(msg?'<p class="m '+(isErr?'e':'')+'">'+esc(msg)+'</p>':'')+(FB.err?'<p class="m e">'+esc(FB.err)+'</p>':'');
  if(!FBCFG){accBox.innerHTML='<p class="m">Las cuentas online todavía no están activadas en esta versión. Tus estadísticas se guardan en este dispositivo y se subirán cuando se active.</p>';return}

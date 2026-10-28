@@ -21,10 +21,13 @@ service cloud.firestore {
           && request.resource.data.get('wins', 0) <= 20
           && request.resource.data.get('icon', 0) <= 50
           && request.resource.data.get('lv', 0) <= 200
-          && request.resource.data.get('deaths', 0) <= 1000;
+          && request.resource.data.get('deaths', 0) <= 1000
+          && request.resource.data.get('dyn', 0) <= 50
+          && request.resource.data.get('cab', 0) <= 5000;
       allow update: if request.auth != null && request.auth.uid == uid && nombreValido()
           && sube('kills', 3000) && sube('wins', 20) && sube('icon', 50)
-          && sube('lv', 200) && sube('deaths', 1000);
+          && sube('lv', 200) && sube('deaths', 1000)
+          && sube('dyn', 50) && sube('cab', 5000);
       allow delete: if false;
     }
   }
