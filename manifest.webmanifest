@@ -2,7 +2,7 @@
  "name": "Mini Doom",
  "short_name": "Mini Doom",
  "start_url": "./",
- "display": "fullscreen",
+ "display": "standalone",
  "orientation": "any",
  "background_color": "#0b0505",
  "theme_color": "#0b0505",
@@ -10,7 +10,8 @@
   {
    "src": "icon-192.png",
    "sizes": "192x192",
-   "type": "image/png"
+   "type": "image/png",
+   "purpose": "any"
   },
   {
    "src": "icon-512.png",
@@ -18,5 +19,16 @@
    "type": "image/png",
    "purpose": "any"
   }
+ ],
+ "id": "./",
+ "scope": "./",
+ "display_override": [
+  "fullscreen",
+  "standalone"
+ ],
+ "description": "Mini Doom: shooter en primera persona, 12 niveles y jefe final.",
+ "lang": "es",
+ "categories": [
+  "games"
  ]
 }

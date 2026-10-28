@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mini Doom</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b0505">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mini Doom">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{--bg:#f1e6d4;--fg:#2b1208;--acc:#b3170f;--pn:rgba(255,248,236,.94);box-sizing:border-box}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0505;--fg:#ffd9a0;--acc:#ff3b2a;--pn:rgba(14,5,4,.93)}}
@@ -4582,7 +4590,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v36',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v37',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4792,7 +4800,12 @@ function openAcc(){lbPanel.style.display='block';lbPanel.scrollTop=0;accUI();lbL
 if(FBCFG)setTimeout(()=>fbInit(),2500);
 const accB=document.createElement('button');accB.className='s2';accB.textContent='CUENTA Y CLASIFICATORIA';accB.onclick=openAcc;
 const mcB=document.createElement('button'),mlB=document.createElement('button'),mnB=document.createElement('button');mcB.className=mlB.className=mnB.className='s2';mcB.style.display=mlB.style.display=mnB.style.display='none';$('mb').after(mcB,mnB,mlB,accB);
-function titleBtns(){accB.textContent='CUENTA Y CLASIFICATORIA'+(FB.user?' · '+FB.name:'');const sv=svGet(),t=state=='title',d=t&&ST.done;mcB.style.display=t&&sv?'block':'none';mnB.style.display=mlB.style.display=d?'block':'none';if(sv)mcB.textContent='CONTINUAR · NIVEL '+(sv.l+1);const T=LV[selLv].ti;mnB.textContent='NIVEL '+(selLv+1)+(T?' · '+T[1]:'')+' ▸';mlB.textContent='REJUGAR (TODAS LAS ARMAS Y BOTAS)'}
+var instEv=null,insB=document.createElement('button');insB.className='s2';insB.textContent='INSTALAR APP';insB.style.display='none';accB.after(insB);
+const isStd=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true,isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const insOK=()=>/^https?:/.test(location.protocol)&&!APK&&!/Electron/.test(navigator.userAgent)&&!isStd()&&(instEv||isIOS||true);
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEv=e;titleBtns()});addEventListener('appinstalled',()=>{instEv=null;titleBtns()});
+insB.onclick=()=>{if(instEv){const e=instEv;instEv=null;e.prompt();e.userChoice.finally(titleBtns)}else{alert(isIOS?'Para instalar en iPhone/iPad: toca el botón Compartir de Safari y elige "Añadir a pantalla de inicio".':'Para instalar: abre el menú del navegador (⋮) y elige "Instalar app" o "Añadir a pantalla de inicio".\n\nSi no aparece, abre la página directamente en Chrome/Edge/Safari (no dentro de otra app).')}};
+function titleBtns(){insB.style.display=state=='title'&&insOK()?'block':'none';accB.textContent='CUENTA Y CLASIFICATORIA'+(FB.user?' · '+FB.name:'');const sv=svGet(),t=state=='title',d=t&&ST.done;mcB.style.display=t&&sv?'block':'none';mnB.style.display=mlB.style.display=d?'block':'none';if(sv)mcB.textContent='CONTINUAR · NIVEL '+(sv.l+1);const T=LV[selLv].ti;mnB.textContent='NIVEL '+(selLv+1)+(T?' · '+T[1]:'')+' ▸';mlB.textContent='REJUGAR (TODAS LAS ARMAS Y BOTAS)'}
 mcB.onclick=()=>{startMode=1;$('mb').onclick()};
 mnB.onclick=()=>{selLv=(selLv+1)%LV.length;titleBtns()};
 mlB.onclick=()=>{startMode=2;$('mb').onclick()};
