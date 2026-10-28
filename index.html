@@ -4580,7 +4580,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v33',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v34',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4652,7 +4652,7 @@ function dyTick(e,dt){const D=DY;if(!D||!e.a)return;
   if(shield&&on&&!n.ok){const near=wallN&&!pgr&&Math.hypot(px-n.x,py-n.y)<2.2&&pz>1.0&&pz<3.6;
    if(near){n.p=Math.min(1,n.p+dt/1.0);D.rt-=dt;if(D.rt<=0){D.rt=.14;S('dyn');burst(n.x,n.z,n.y,2,0x9fe0ff,2)}if(n.p>=1){n.ok=1;n.okT=0;S('dyz');burst(n.x,n.z,n.y,16,0x66ff99,4);shake=Math.max(shake,.3)}}
    else n.p=Math.max(0,n.p-dt*.1)}
-  if(n.ok&&shield){n.okT+=dt;if(n.okT>18){n.ok=0;n.p=0;S('dyz');burst(n.x,n.z,n.y,12,0xff6030,4)}}
+  if(n.ok&&shield){n.okT+=dt;if(n.okT>36){n.ok=0;n.p=0;S('dyz');burst(n.x,n.z,n.y,12,0xff6030,4)}}
   const col=!on?0x2c333c:n.ok?0x44ff88:n.p>0?0xffd040:(Math.sin(t*20+i)>0?0xff4020:0xff9030);
   n.bx.material.color.setHex(col);n.bm.material.color.setHex(col);n.bm.material.opacity=on?(n.ok?.5:.42):.05;n.bx.rotation.y=t*2;n.bx.scale.setScalar(on?1+.15*Math.sin(t*9+i):.6);
   n.ln.visible=on;n.ln.material.color.setHex(col);const P=n.ln.geometry.attributes.position,ju=n.ok?.05:.45;
