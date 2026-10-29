@@ -4646,13 +4646,13 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v39',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v40',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
 function diag(){const e=$('dg');if(!e)return;if(!APK){e.textContent='';return}const iw=Math.max(innerWidth,innerHeight),ih=Math.min(innerWidth,innerHeight),sw=Math.max(screen.width,screen.height),sh=Math.min(screen.width,screen.height),ok=Math.abs(iw-sw)<=3&&Math.abs(ih-sh)<=3;
  e.textContent='APK '+VER+' · '+(ok?'pantalla completa OK ('+iw+'x'+ih+')':'AVISO: ocupa '+iw+'x'+ih+' de '+sw+'x'+sh+' (APK viejo o sin apk.yml nuevo)')}
-function resize(){const w=innerWidth,h=innerHeight;if(!w||!h)return;LW=w;LH=h;readSA();diag();const pr=[.5,.75,1,1.5][ST.rs]*Math.min(devicePixelRatio||1,2)*(typeof DRS!=='undefined'&&ST.dr?DRS:1),a=w/h;renderer.setPixelRatio(pr);renderer.setSize(w,h,false);
+function resize(){const w=innerWidth,h=innerHeight;if(!w||!h)return;LW=w;LH=h;readSA();diag();let pr=[.5,.75,1,1.5][ST.rs]*Math.min(devicePixelRatio||1,2)*(typeof DRS!=='undefined'&&ST.dr?DRS:1);{const mp=[1.0e6,1.8e6,2.6e6,4.5e6][ST.rs],px_=w*h*pr*pr;if(px_>mp)pr*=Math.sqrt(mp/px_)}const a=w/h;renderer.setPixelRatio(pr);renderer.setSize(w,h,false);
  BF=fovFor(a);camera.fov=BF+(fv-.66)*110;wCam.fov=wfovFor(a);camera.aspect=wCam.aspect=a;camera.updateProjectionMatrix();wCam.updateProjectionMatrix()}
 addEventListener('resize',resize);addEventListener('orientationchange',()=>{setTimeout(resize,120);setTimeout(resize,500)});if(window.visualViewport)visualViewport.addEventListener('resize',resize);
 function goFS(){try{const d=document.documentElement;if(APK||document.fullscreenElement||!d.requestFullscreen||!matchMedia('(pointer:coarse)').matches||matchMedia('(display-mode: fullscreen)').matches||matchMedia('(display-mode: standalone)').matches)return;const p=d.requestFullscreen({navigationUI:'hide'});if(p&&p.catch)p.catch(()=>{})}catch(e){}}
@@ -5215,25 +5215,25 @@ buildSet();buildTex();resize();applyLights();newGame();load();
 chooser();show('MINI DOOM','Shooter en primera persona. Cruza el Infierno y la Tierra, vence al Icono del Pecado y detén a El Dínamo.','JUGAR');
 {const b=$('mb'),T=NM.length;b.disabled=true;b.textContent='CARGANDO 0/'+T;mdl.cb=n=>{b.textContent='CARGANDO '+n+'/'+T};
  loadModels(()=>{try{buildLevel()}catch(e){console.error(e)}b.disabled=false;b.textContent=state=='title'?(svGet()?'NUEVA PARTIDA':'JUGAR'):b.textContent;titleBtns();window.__ready=1})}
-let lt=0;const HUDc=['','',''];
+let lt=0,nT=0;const HUDc=['','',''];
 const FPSE=document.createElement('div');FPSE.style.cssText='position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 28px);color:#9f9;font:12px/1.3 monospace;text-shadow:0 1px 0 #000;pointer-events:none;z-index:5;white-space:pre;text-align:center;display:none';document.body.appendChild(FPSE);
-const PF={n:0,t:0,u:0,r:0,late:0,lc:0,fast:0};renderer.info.autoReset=false;
+const PF={mx:0,sl:0,n:0,t:0,u:0,r:0,late:0,lc:0,fast:0};renderer.info.autoReset=false;
 (function loop(t){const fi=[1000/30,1000/60,1000/120,1000/144,0][ST.fl],el=t-lt;
- if(fi&&el<fi-2.5){requestAnimationFrame(loop);return}
+ if(fi){if(t<nT-1.5){requestAnimationFrame(loop);return}nT=(t-nT>fi)?t+fi:nT+fi}
  const dt=Math.min(.05,el/1e3||0);lt=t;musTick(dt);
  renderer.info.reset();const t0=performance.now();
  gpPoll(dt);if(state!='play'&&whOn)whClose(0);{const tg=whOn?(ST.wh?0:.2):1;TSC+=(tg-TSC)*Math.min(1,dt*14);if(Math.abs(TSC-tg)<.01)TSC=tg}
  if(state=='play'){if(TSC>.005)update(dt*TSC)}else if(state=='cine')cinTick(dt);
  const t1=performance.now();render(dt);const t2=performance.now();
- PF.n++;PF.u+=t1-t0;PF.r+=t2-t1;PF.t+=el;
+ PF.n++;if(el>PF.mx)PF.mx=el;if(el>45)PF.sl++;PF.u+=t1-t0;PF.r+=t2-t1;PF.t+=el;
  {const ref=fi||PF.ref||16.7;PF.late+=el/ref;PF.lc++;if(el>3&&(!PF.ref||el<PF.ref))PF.ref=Math.max(4,el)}
  if(PF.t>=500){const f=PF.n/(PF.t/1e3);
   if(ST.dr&&PF.lc>2){const l=PF.late/PF.lc;if(l>1.22&&DRS>.6){DRS=Math.max(.6,DRS-.1);PF.fast=0;resize()}else if(l<1.08){if(++PF.fast>=6&&DRS<1){DRS=Math.min(1,DRS+.1);PF.fast=0;resize()}}else PF.fast=0}
   PF.late=0;PF.lc=0;
   if(ST.fc){const I=renderer.info.render;FPSE.style.display='block';FPSE.style.color=f>=([30,60,120,144,1e9][ST.fl])*.9||f>=55?'#9f9':f>=30?'#ee6':'#f66';
-   FPSE.textContent='FPS '+Math.round(f)+(ST.fc>1?'  ·  '+(PF.t/PF.n).toFixed(1)+' ms\nlógica '+(PF.u/PF.n).toFixed(1)+' ms · 3D '+(PF.r/PF.n).toFixed(1)+' ms\nllamadas '+I.calls+' · tris '+(I.triangles/1000).toFixed(0)+'k · res '+Math.round(DRS*100)+'%\nenemigos '+en.filter(e=>e.a).length:'')}
+   FPSE.textContent='FPS '+Math.round(f)+(ST.fc>1?'  ·  '+(PF.t/PF.n).toFixed(1)+' ms\nlógica '+(PF.u/PF.n).toFixed(1)+' ms · 3D '+(PF.r/PF.n).toFixed(1)+' ms\nllamadas '+I.calls+' · tris '+(I.triangles/1000).toFixed(0)+'k · res '+Math.round(DRS*100)+'%\nenemigos '+en.filter(e=>e.a).length+'\npico '+PF.mx.toFixed(0)+' ms · cuadros lentos '+PF.sl+' · '+renderer.domElement.width+'x'+renderer.domElement.height:'')}
   else FPSE.style.display='none';
-  PF.n=PF.t=PF.u=PF.r=0}
+  PF.n=PF.t=PF.u=PF.r=0;PF.mx=0;PF.sl=0}
 
  {const a='VIDA '+Math.ceil(hp)+'  ARM '+Math.ceil(ar),b=WP[wi].n+' '+ammo,c='N'+(lvl+1)+(LV[lvl].fin||LV[lvl].dyn?'  JEFE':'  '+kills+'/'+tot);if(a!==HUDc[0]){HUDc[0]=a;$('h1').textContent=a}if(b!==HUDc[1]){HUDc[1]=b;$('h2').textContent=b}if(c!==HUDc[2]){HUDc[2]=c;$('h3').textContent=c}}
  requestAnimationFrame(loop)})(0);
