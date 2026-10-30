@@ -97,6 +97,8 @@ body.mt .hud,body.mt .b,body.mt .joy{visibility:hidden!important}body.mt #hc{opa
  #mR{gap:7px}#msg #mb{padding:10px 18px 8px;font-size:24px}#msg .s2{padding:8px 12px 7px}
  #msg[data-s=pause] #mL,#msg[data-s=win] #mL,#msg[data-s=dead] #mL{flex-basis:360px;max-width:360px}
 }
+#msg{touch-action:pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}#mL,#mR{margin-top:auto;margin-bottom:auto}
+@media (orientation:landscape) and (min-width:700px){#msg{align-items:flex-start}#msg #set{columns:2;column-gap:6px;max-width:none}#msg #set button{width:100%;break-inside:avoid;font-size:11px;letter-spacing:.07em;padding:7px 8px 6px}#mR{flex-basis:420px;max-width:420px}}
 @media (min-width:1100px) and (min-height:700px){#msg{zoom:1.35}}
 @media (min-width:1700px) and (min-height:950px){#msg{zoom:1.7}}
 #msg button:disabled{opacity:.55}
@@ -4646,7 +4648,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v40',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v41',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
