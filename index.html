@@ -4599,6 +4599,11 @@ function hud(){const w=innerWidth,h=innerHeight,dp=Math.min(devicePixelRatio||1,
  if(dashT>0){hg.fillStyle='rgba(120,180,255,.16)';hg.fillRect(0,0,w,h)}
  if(state=='dead'){hg.fillStyle='rgba(120,0,0,.55)';hg.fillRect(0,0,w,h)}
  const bs=en.find(e=>e.a&&e.w&&ET[e.k].bs);
+ {const q=pk.find(o=>o.big&&o.on);if(q){const v=new THREE.Vector3(q.x,(q.z||0)+1.2,q.y).project(camera);let sx=(v.x*.5+.5)*w,sy=(-v.y*.5+.5)*h;const beh=v.z>1;if(beh){sx=w-sx;sy=h*.5}
+  const m=26,cl=(a,b,c)=>Math.max(b,Math.min(c,a)),on=!beh&&sx>m&&sx<w-m&&sy>m&&sy<h-m,X=cl(sx,m,w-m),Y=cl(sy,h*.2,h-m),d=Math.hypot(px-q.x,py-q.y),pu=.75+.25*Math.sin(t3*8);
+  hg.globalAlpha=pu;hg.fillStyle='#ffd23a';hg.strokeStyle='#000';hg.lineWidth=3;hg.beginPath();
+  if(on){hg.moveTo(X,Y-8);hg.lineTo(X-9,Y-24);hg.lineTo(X+9,Y-24)}else{const dir=X<=m+1?-1:X>=w-m-1?1:0;if(dir){hg.moveTo(X+dir*10,Y);hg.lineTo(X-dir*6,Y-12);hg.lineTo(X-dir*6,Y+12)}else{hg.moveTo(X,Y+10);hg.lineTo(X-12,Y-6);hg.lineTo(X+12,Y-6)}}
+  hg.closePath();hg.stroke();hg.fill();hg.font='bold 11px sans-serif';hg.fillStyle='#fff';hg.textAlign='center';hg.fillText('MATA-DÍNAMOS · '+Math.round(d)+' m',cl(X,70,w-70),Y+(on?-28:24));hg.globalAlpha=1}}
  if(bs){const T=ET[bs.k],bw=Math.min(260,w*.6),bx=(w-bw)/2,by=Math.max(64+SA.t,h*.1);hg.fillStyle='rgba(0,0,0,.6)';hg.fillRect(bx-2,by-2,bw+4,12);hg.fillStyle=bs.sh?'#6af':'#d11';hg.fillRect(bx,by,bw*Math.max(0,bs.hp)/bs.mhp,8);hg.fillStyle='#fff';hg.font='12px sans-serif';hg.textAlign='center';hg.fillText(T.nm,w/2,by-5);if(DY&&bs.k==22){hg.fillStyle=DY.st=='stun'?'#ffe066':'#9fd8ff';hg.fillText(DY.st=='stun'?'¡SOBRECARGA! ATACA EL NÚCLEO · '+Math.ceil(DY.stT)+' s':'ESCUDO ACTIVO · REPARA LOS CABLES ROJOS ('+DY.n.filter((q,i)=>q.ok&&DY.ord.indexOf(i)<DY.na).length+'/'+DY.na+')',w/2,by+24);
   if(DY.st!='stun'){hg.font='11px sans-serif';hg.fillStyle='#ffd9a0';hg.fillText('Dispárale al cable rojo (o pégate a su pared saltando) para repararlo',w/2,by+38);
    DY.ord.slice(0,DY.na).forEach(i=>{const n=DY.n[i];if(n.ok)return;const v=new THREE.Vector3(n.x,n.z+.4,n.y).project(camera);let sx=(v.x*.5+.5)*w,sy=(-v.y*.5+.5)*h,beh=v.z>1;if(beh){sx=w-sx;sy=h*.5}
@@ -4651,7 +4656,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v45',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v46',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4732,7 +4737,7 @@ function dyTick(e,dt){const D=DY;if(!D||!e.a)return;
  // ---- sobrecarga
  if(shield&&D.ord.slice(0,D.na).every(i=>D.n[i].ok)){D.st='stun';D.stT=[9,8,7][ph];D.n.forEach(n=>{n.ok=0;n.p=0});D.rings.forEach(r=>{r.m.visible=false;r.a=0});D.fP=0;D.chg=0;D.rq=0;shake=2;S('dyo',cx,cy);burst(cx,bz+3.6,cy,60,0x9fe0ff,9);burst(cx,bz+3.6,cy,30,0xffffff,6);e.at=.8;dyAnn('¡SOBRECARGA!','ATACA EL NÚCLEO')}
  if(D.st=='stun'){D.stT-=dt;e.at=Math.max(e.at||0,.2);if(Math.random()<dt*14){const a=Math.random()*6.28;burst(cx+Math.cos(a)*1.6,bz+1+Math.random()*4,cy+Math.sin(a)*1.6,3,Math.random()<.5?0x9fe0ff:0xffffff,3);S('dyf',cx,cy)}
-  if(D.stT<=0){const np=e.hp<e.mhp*.33?2:e.hp<e.mhp*.66?1:0;D.st='shield';D.wT=2.8;D.sT=2.2;D.aT=4;D.fP=0;D.fT=3;if(np!==D.ph){D.ph=np;dySpawn(D,np);if(np==2&&!own[8]){let ax=px,ay=py;for(let t=0;t<24;t++){const a=ang+(t%2?1:-1)*t*.26,x=px+Math.cos(a)*2.6,y=py+Math.sin(a)*2.6;if(!hit(x,y,.4)){ax=x;ay=y;break}}pk.push({k:'w',w:8,on:1,x:ax,y:ay,z:gh(ax,ay)});S('wp')}dyAnn('FASE '+(np+1),['','LAS ONDAS SE ACELERAN Y SUMAN CABLES','EL SUELO SE ELECTRIFICA · ¡ARMA NUEVA: MATA-DÍNAMOS!'][np])}else dyAnn('ESCUDO RESTAURADO','REPARA LOS CABLES OTRA VEZ');S('roar',cx,cy);shake=1.2}
+  if(D.stT<=0){const np=e.hp<e.mhp*.33?2:e.hp<e.mhp*.66?1:0;D.st='shield';D.wT=2.8;D.sT=2.2;D.aT=4;D.fP=0;D.fT=3;if(np!==D.ph){D.ph=np;dySpawn(D,np);if(np==2&&!own[8]){let ax=px,ay=py;for(let t=0;t<24;t++){const a=ang+(t%2?1:-1)*t*.26,x=px+Math.cos(a)*2.6,y=py+Math.sin(a)*2.6;if(!hit(x,y,.4)){ax=x;ay=y;break}}pk.push({k:'w',w:8,on:1,big:1,x:ax,y:ay,z:gh(ax,ay)});S('wp')}dyAnn('FASE '+(np+1),['','LAS ONDAS SE ACELERAN Y SUMAN CABLES','EL SUELO SE ELECTRIFICA · ¡ARMA NUEVA: MATA-DÍNAMOS!'][np])}else dyAnn('ESCUDO RESTAURADO','REPARA LOS CABLES OTRA VEZ');S('roar',cx,cy);shake=1.2}
   D.wedges.forEach(w=>w.visible=false);return}
  // ---- onda expansiva
  D.wT-=dt;if(D.wT<=0&&D.chg<=0){D.chg=.95;S('dyc',cx,cy);e.at=.95}
@@ -5129,7 +5134,7 @@ function render(dt){dt=dt||.016;t3+=dt;if(skyM&&skyM.parent)skyM.position.copy(c
   if(m.sm&&m.visible){const G=GL[e.k],s=T.s,q=state=='cine'?0:(e.x-px)*(e.x-px)+(e.y-py)*(e.y-py),l0=e.lv||0,a=(6+5*s)*(l0>=1?.92:1),b=(12+8*s)*(l0>=2?.92:1),lv=q<a*a?0:q<b*b?1:2;if(lv!==l0){e.lv=lv;m.sm.geometry=G.lg[lv]}}
   animE(e,m,T,dt,sp);if(m.visible&&e.a&&shN<96){shP.set(e.x,(e.z||0)+.03,e.y);shS.setScalar(m.shs);shMt.compose(shP,shQ,shS);shI.setMatrixAt(shN++,shMt)}}
  shI.count=shN;shI.instanceMatrix.needsUpdate=true;
- for(const p of pk){if(!p.m){p.m=pickMesh(p.k);ents.add(p.m)}{const ddx=p.x-px,ddy=p.y-py,fw=ddx*dX+ddy*dY,fr=scene.fog?scene.fog.far+3:30;p.m.visible=!!p.on&&(state=='cine'||!(fw<-1.2||ddx*ddx+ddy*ddy>289||ddx*ddx+ddy*ddy>fr*fr||(fw>1.5&&Math.abs(-ddx*dY+ddy*dX)>(fw+1.2)*Math.tan(camera.fov*D2R/2)*camera.aspect*1.12+1.2)))}if(p.on&&p.m.visible){p.m.position.set(p.x,(p.z||0)+.45+Math.sin(t3*2+p.x)*.08,p.y);p.m.rotation.y=t3*1.5}}
+ for(const p of pk){if(!p.m){p.m=pickMesh(p.k);ents.add(p.m);if(p.big){const bm=new THREE.Mesh(new THREE.CylinderGeometry(.32,.32,14,10,1,true),new THREE.MeshBasicMaterial({color:0xffd23a,transparent:true,opacity:.38,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false}));bm.position.y=6;p.m.add(bm);const bo=new THREE.Mesh(new THREE.SphereGeometry(.5,12,8),new THREE.MeshBasicMaterial({color:0xffe27a,transparent:true,opacity:.35,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}));p.m.add(bo)}}{const ddx=p.x-px,ddy=p.y-py,fw=ddx*dX+ddy*dY,fr=scene.fog?scene.fog.far+3:30;p.m.visible=!!p.on&&(state=='cine'||p.big||!(fw<-1.2||ddx*ddx+ddy*ddy>289||ddx*ddx+ddy*ddy>fr*fr||(fw>1.5&&Math.abs(-ddx*dY+ddy*dX)>(fw+1.2)*Math.tan(camera.fov*D2R/2)*camera.aspect*1.12+1.2)))}if(p.on&&p.m.visible){p.m.position.set(p.x,(p.z||0)+.45+Math.sin(t3*2+p.x)*.08,p.y);p.m.rotation.y=t3*1.5}}
  for(let i=0;i<Math.max(pj.length,pjs.length);i++){if(i<pj.length){const s=pjS(i);s.visible=true;s.position.set(pj[i].x,pj[i].z===undefined?.95:pj[i].z,pj[i].y);s.material.color.setHex(PCOL[pj[i].c|0])}else pjs[i].visible=false}
  if(ST.pt)partUp(dt);
  if(wasW!==wi){wasW=wi;wgs.forEach((g,i)=>g.visible=i==wi&&!wnew[i]);wnew.forEach((o,i)=>{if(o)o.g.visible=i==wi});mzl.color.set(WF[wi][0]);mfs.material.color.set(WF[wi][0]);wl.color.set(WF[wi][0])}
