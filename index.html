@@ -4280,8 +4280,9 @@ const LV=[
 {m:E12,hg:E12h,pt:[10,5],s:[20.0,31.5,-1.5708],wh:6,sky:1,fg:46,e:[[22,1]],a:20,h:14,r:8,w:[],last:1,dyn:1,f:[30,44,84],t:[7,8,9,10,11,12],fl:5,cl:0,ti:['NIVEL 12','EL NÚCLEO · EL DÍNAMO']}];
 const DF=[{n:'FÁCIL',dm:.6,hp:.7,am:1.5},{n:'NORMAL',dm:1,hp:1,am:1},{n:'DIFÍCIL',dm:1.5,hp:1.4,am:.8},{n:'PESADILLA',dm:2.2,hp:1.8,am:.6}];
 var DRS=1;let ST={df:1,rs:1,tx:1,lg:0,pt:1,sk:1,rd:1,sn:1,mu:2,sv:1,mq:1,ci:0,fl:1,fc:0,dr:1,wh:0,done:0};try{Object.assign(ST,JSON.parse(localStorage.getItem('md7')||'{}'))}catch(e){}
+if(!ST.f2){if(ST.fl>=4)ST.fl=5;ST.f2=1}
 const SV=()=>{try{localStorage.setItem('md7',JSON.stringify(ST))}catch(e){}};
-const OPT=[['df','DIFICULTAD',DF.map(d=>d.n)],['rs','RESOLUCIÓN 3D',['BAJA','MEDIA','ALTA','ULTRA']],['tx','TEXTURAS',['64 px','128 px','256 px']],['lg','LUCES',['BAJA','ALTA']],['pt','PARTÍCULAS',['NO','SÍ']],['sk','SACUDIDA',['NO','SÍ']],['rd','RADAR',['NO','SÍ']],['sn','SENSIBILIDAD',['BAJA','MEDIA','ALTA']],['mu','MÚSICA',['NO','BAJA','MEDIA','ALTA']],['sv','EFECTOS',['BAJO','MEDIO','ALTO']],['mq','MODELOS',['SENCILLOS','DETALLADOS']],['ci','CINEMÁTICAS',['SÍ','NO']],['fl','LÍMITE DE FPS',['30','60','120','144','SIN LÍMITE']],['fc','CONTADOR DE FPS',['NO','FPS','DETALLADO']],['dr','RESOLUCIÓN DINÁMICA',['NO','SÍ']],['wh','RUEDA DE ARMAS',['CÁMARA LENTA','PAUSA']]];
+const OPT=[['df','DIFICULTAD',DF.map(d=>d.n)],['rs','RESOLUCIÓN 3D',['BAJA','MEDIA','ALTA','ULTRA']],['tx','TEXTURAS',['64 px','128 px','256 px']],['lg','LUCES',['BAJA','ALTA']],['pt','PARTÍCULAS',['NO','SÍ']],['sk','SACUDIDA',['NO','SÍ']],['rd','RADAR',['NO','SÍ']],['sn','SENSIBILIDAD',['BAJA','MEDIA','ALTA']],['mu','MÚSICA',['NO','BAJA','MEDIA','ALTA']],['sv','EFECTOS',['BAJO','MEDIO','ALTO']],['mq','MODELOS',['SENCILLOS','DETALLADOS']],['ci','CINEMÁTICAS',['SÍ','NO']],['fl','LÍMITE DE FPS',['30','60','120','144','180','SIN LÍMITE']],['fc','CONTADOR DE FPS',['NO','FPS','DETALLADO']],['dr','RESOLUCIÓN DINÁMICA',['NO','SÍ']],['wh','RUEDA DE ARMAS',['CÁMARA LENTA','PAUSA']]];
 /* pr=velocidad proyectil, pc=color, n=cantidad, sd=abanico, sh=escudo, sm=invoca(tipo+1), si=cada cuanto, bs=jefe */
 const ET=[
 {nm:'DIABLILLO',hp:3,sp:1.2,dm:[5,10],rg:9,rt:1.5,s:.8,st:2.5,pr:4,pc:0},
@@ -4756,7 +4757,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v52',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v53',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -5351,10 +5352,10 @@ buildSet();buildTex();resize();applyLights();newGame();load();
 chooser();show('MINI DOOM','Shooter en primera persona. Cruza el Infierno y la Tierra, vence al Icono del Pecado y detén a El Dínamo.','JUGAR');
 {const b=$('mb'),T=NM.length;b.disabled=true;b.textContent='CARGANDO 0/'+T;mdl.cb=n=>{b.textContent='CARGANDO '+n+'/'+T};
  loadModels(()=>{try{buildLevel()}catch(e){console.error(e)}b.disabled=false;b.textContent=state=='title'?(svGet()?'NUEVA PARTIDA':'JUGAR'):b.textContent;titleBtns();window.__ready=1})}
-let lt=0,nT=0;const HUDc=['','',''];
+let lt=0,nT=0;const RAF={c:0,t0:performance.now(),hz:0};const HUDc=['','',''];
 const FPSE=document.createElement('div');FPSE.style.cssText='position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 28px);color:#9f9;font:12px/1.3 monospace;text-shadow:0 1px 0 #000;pointer-events:none;z-index:5;white-space:pre;text-align:center;display:none';document.body.appendChild(FPSE);
 const PF={mx:0,sl:0,n:0,t:0,u:0,r:0,late:0,lc:0,fast:0};renderer.info.autoReset=false;
-(function loop(t){const fi=[1000/30,1000/60,1000/120,1000/144,0][ST.fl],el=t-lt;
+(function loop(t){const fi=[1000/30,1000/60,1000/120,1000/144,1000/180,0][ST.fl],el=t-lt;RAF.c++;
  if(fi){if(t<nT-1.5){requestAnimationFrame(loop);return}nT=(t-nT>fi)?t+fi:nT+fi}
  const dt=Math.min(.05,el/1e3||0);lt=t;musTick(dt);
  renderer.info.reset();const t0=performance.now();
@@ -5363,11 +5364,11 @@ const PF={mx:0,sl:0,n:0,t:0,u:0,r:0,late:0,lc:0,fast:0};renderer.info.autoReset=
  const t1=performance.now();render(dt);const t2=performance.now();
  PF.n++;if(el>PF.mx)PF.mx=el;if(el>45)PF.sl++;PF.u+=t1-t0;PF.r+=t2-t1;PF.t+=el;
  {const ref=fi||PF.ref||16.7;PF.late+=el/ref;PF.lc++;if(el>3&&(!PF.ref||el<PF.ref))PF.ref=Math.max(4,el)}
- if(PF.t>=500){const f=PF.n/(PF.t/1e3);
+ if(PF.t>=500){const f=PF.n/(PF.t/1e3);{const nw=performance.now();RAF.hz=RAF.c*1000/Math.max(1,nw-RAF.t0);RAF.c=0;RAF.t0=nw}
   if(ST.dr&&PF.lc>2){const l=PF.late/PF.lc;if(l>1.22&&DRS>.6){DRS=Math.max(.6,DRS-.1);PF.fast=0;resize()}else if(l<1.08){if(++PF.fast>=6&&DRS<1){DRS=Math.min(1,DRS+.1);PF.fast=0;resize()}}else PF.fast=0}
   PF.late=0;PF.lc=0;
-  if(ST.fc){const I=renderer.info.render;FPSE.style.display='block';FPSE.style.color=f>=([30,60,120,144,1e9][ST.fl])*.9||f>=55?'#9f9':f>=30?'#ee6':'#f66';
-   FPSE.textContent='FPS '+Math.round(f)+(ST.fc>1?'  ·  '+(PF.t/PF.n).toFixed(1)+' ms\nlógica '+(PF.u/PF.n).toFixed(1)+' ms · 3D '+(PF.r/PF.n).toFixed(1)+' ms\nllamadas '+I.calls+' · tris '+(I.triangles/1000).toFixed(0)+'k · res '+Math.round(DRS*100)+'%\nenemigos '+en.filter(e=>e.a).length+'\npico '+PF.mx.toFixed(0)+' ms · cuadros lentos '+PF.sl+' · '+renderer.domElement.width+'x'+renderer.domElement.height:'')}
+  if(ST.fc){const I=renderer.info.render;FPSE.style.display='block';FPSE.style.color=f>=([30,60,120,144,180,1e9][ST.fl])*.9||f>=55?'#9f9':f>=30?'#ee6':'#f66';
+   FPSE.textContent='FPS '+Math.round(f)+(ST.fc>1?'  ·  '+(PF.t/PF.n).toFixed(1)+' ms\nlógica '+(PF.u/PF.n).toFixed(1)+' ms · 3D '+(PF.r/PF.n).toFixed(1)+' ms\nllamadas '+I.calls+' · tris '+(I.triangles/1000).toFixed(0)+'k · res '+Math.round(DRS*100)+'%\nmonitor/rAF ~'+Math.round(RAF.hz)+' Hz · enemigos '+en.filter(e=>e.a).length+'\npico '+PF.mx.toFixed(0)+' ms · cuadros lentos '+PF.sl+' · '+renderer.domElement.width+'x'+renderer.domElement.height:'')}
   else FPSE.style.display='none';
   PF.n=PF.t=PF.u=PF.r=0;PF.mx=0;PF.sl=0}
 

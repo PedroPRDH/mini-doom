@@ -3,7 +3,9 @@ const path = require('path');
 const http = require('http');
 const fs = require('fs');
 
-// el límite de FPS lo controla el propio juego (Ajustes > Límite de FPS); se usa la sincronía vertical del monitor
+// el límite de FPS lo controla el propio juego (Ajustes > Límite de FPS); se quita el tope de 60 cuadros de Chromium para monitores de alta frecuencia
+app.commandLine.appendSwitch('disable-frame-rate-limit');
+app.commandLine.appendSwitch('disable-gpu-vsync');
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
 app.commandLine.appendSwitch('force_high_performance_gpu');
