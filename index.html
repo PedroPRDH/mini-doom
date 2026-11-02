@@ -4756,7 +4756,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v51',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v52',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -4915,7 +4915,7 @@ function icon(e,ph,b){const pt=e.pn=((e.pn|0)+1)%4;S(pt==1?'roar':'fb',e.x,e.y);
  else if(pt==2){e.bur=4+ph*2;e.bt=0}
  else{e.spi=2.2+ph*.5;e.s2=0;e.sa=b-1.2}}
 function hurt(n){if(dashT>0)return;n*=DF[ST.df].dm;const a=Math.min(ar,n*.5);ar-=a;hp-=n-a;dmg=1;shake=Math.max(shake,.5);S('hurt');if(hp<=0){hp=0;end('dead')}}
-function end(s){state=s;firing=false;const L=LV[lvl],last=!!L.last;if(s=='dead')stat('deaths');else{stat('lv');if(last&&runFull)stat('wins')}fbSync();if(s=='win'&&last){ST.done=1;SV();try{localStorage.removeItem(SVK)}catch(e){}}S(s=='dead'?'lose':'win');
+function end(s){state=s;firing=false;unlockPtr();const L=LV[lvl],last=!!L.last;if(s=='dead')stat('deaths');else{stat('lv');if(last&&runFull)stat('wins')}fbSync();if(s=='win'&&last){ST.done=1;SV();try{localStorage.removeItem(SVK)}catch(e){}}S(s=='dead'?'lose':'win');
  setTimeout(()=>show(s=='dead'?'HAS MUERTO':last?'¡GANASTE!':(L.nt||'¡NIVEL '+(lvl+1)+' COMPLETO!'),s=='dead'?'Los demonios ganaron esta vez.':last?'Derrotaste a las legiones del Infierno y destruiste a El Dínamo. ¡La humanidad está a salvo! DESBLOQUEADO: en el menú principal puedes rejugar cualquier nivel con todas las armas y las botas desde el inicio.':(L.nx||'Siguiente: nivel '+(lvl+2)+' de '+LV.length+'.'),s=='dead'?'REINTENTAR':last?'JUGAR DE NUEVO':(L.nb||'SIGUIENTE NIVEL')),s=='dead'?900:700)}
 /* ===== cuentas online y clasificatoria (Firebase) ===== */
 const FBCFG={apiKey:"AIzaSyDtL-PKPmAWvG6EBaZHxL3I-1nUl2jgCrg",authDomain:"mini-doom.firebaseapp.com",projectId:"mini-doom",storageBucket:"mini-doom.firebasestorage.app",messagingSenderId:"80575471992",appId:"1:80575471992:web:0e7b945bfcd71ad340288d"};
@@ -4976,7 +4976,7 @@ mcB.onclick=()=>{startMode=1;$('mb').onclick()};
 mnB.onclick=()=>{selLv=(selLv+1)%LV.length;titleBtns()};
 mlB.onclick=()=>{startMode=2;$('mb').onclick()};
 function show(t,p,b){diag();$('cw').style.display=state=='title'||(state=='win'&&LV[lvl].last)?'block':'none';titleBtns();if(state=='title'&&svGet()&&b=='JUGAR')b='NUEVA PARTIDA';$('mt').textContent=t;$('mp').textContent=p;$('mb').textContent=b;$('msg').dataset.s=state;document.body.classList.toggle('mt',state=='title');$('hint').textContent=PCM?'WASD mover · mouse apuntar · clic disparar · espacio saltar':'Izq. mover · der. mirar y disparar · dash esquivar';$('msg').style.display='flex'}
-$('mb').onclick=()=>{const retry=state=='dead';goFS();if(state=='title'||state=='pause'||state=='win'||state=='dead')setTimeout(()=>{if(state=='play')lockPtr()},0);$('msg').style.display='none';$('set').style.display='none';if(state=='pause'){state='play';return}
+$('mb').onclick=()=>{const retry=state=='dead';goFS();if(state=='title'||state=='pause'||state=='win'||state=='dead')setTimeout(()=>{lockPtr();relockPtr()},0);$('msg').style.display='none';$('set').style.display='none';if(state=='pause'){state='play';return}
  if(state=='title'){runFull=startMode!=2;if(startMode==1){const v=svGet();if(v){cs=v.cs|0;lvl=v.l;hp=v.hp;ar=v.ar;ammo=v.ammo;own=v.own;wi=0}else newGame()}else if(startMode==2){newGame();lvl=selLv;own=[1,1,1,1,1,1,1,1];ammo=ST.df==2?340:150;ST.bt=1;SV();wi=1}else newGame();startMode=0}else if(state=='win'){if(lvl<LV.length-1){lvl++;hp=Math.min(HM(),hp+30)}else newGame()}
  else if(state=='dead'){hp=HM();ar=CH[cs].ar;own=sOwn.slice();ammo=Math.max(sAmmo,30);wi=0}
  load();state='play';svPut();musLvl();S('click');if(LV[lvl].dyn&&!retry&&!ST.ci)startCine('dintro');else if(LV[lvl].fin&&!retry&&!ST.ci)startCine('intro');else if(LV[lvl].ti&&!LV[lvl].fin){const T0=LV[lvl].ti,l0=lvl;cTitle(T0[0],T0[1]);setTimeout(()=>{if(lvl==l0&&state=='play')cTitle('')},3200)}};
@@ -5269,7 +5269,9 @@ var PCM=!(('ontouchstart' in window)||navigator.maxTouchPoints>0)||/Electron/.te
 function setPC(v){PCM=!!v;document.body.classList.toggle('pc',PCM)}setPC(PCM);
 (function(){const st=document.createElement('style');st.textContent='body.pc .b:not(#pz),body.pc .joy{display:none!important}#pch{display:none;font:12px/1.5 system-ui,sans-serif;max-width:420px;text-align:center;opacity:.8;margin:0}body.pc #pch{display:block}';document.head.appendChild(st);
  const h=document.createElement('p');h.id='pch';h.innerHTML='WASD mover · Ratón apuntar y disparar · Clic derecho dash · Espacio saltar · Shift correr<br>Q (mantener) rueda de armas · Rueda del ratón / 1-8 cambia arma · Esc pausa · Mando compatible';$('mb').before(h)})();
-const lockPtr=()=>{if(PCM&&state=='play'&&!document.pointerLockElement)try{const r=document.documentElement.requestPointerLock();if(r&&r.catch)r.catch(()=>{})}catch(e){}};
+const unlockPtr=()=>{try{if(document.pointerLockElement&&document.exitPointerLock)document.exitPointerLock()}catch(e){}};
+const relockPtr=()=>{if(!PCM)return;let n=0;const t=setInterval(()=>{if(document.pointerLockElement||(state!='play'&&state!='cine')||++n>16){clearInterval(t);return}lockPtr()},200)};
+const lockPtr=()=>{if(PCM&&(state=='play'||state=='cine')&&!document.pointerLockElement)try{const r=document.documentElement.requestPointerLock();if(r&&r.catch)r.catch(()=>{})}catch(e){}};
 document.addEventListener('pointerdown',e=>{if(e.pointerType=='touch'&&PCM)setPC(0)},true);
 document.addEventListener('pointermove',e=>{if(e.pointerType=='mouse'&&!PCM)setPC(1)},true);
 document.addEventListener('mousedown',e=>{if(!PCM||state!='play')return;if(e.button==0){if(!document.pointerLockElement)lockPtr();firing=true}else if(e.button==2)dashReq=1});
@@ -5338,7 +5340,7 @@ onkeyup=e=>{KY[e.key.toLowerCase()]=0};
 oncontextmenu=e=>e.preventDefault();
 
 function buildSet(){const c=$('set');c.innerHTML='';OPT.forEach(([k,n,v])=>{const b=document.createElement('button'),t=()=>b.textContent=n+': '+v[ST[k]];t();b.onclick=()=>{ST[k]=(ST[k]+1)%v.length;t();SV();if(k=='rs'||k=='dr'){DRS=1;resize()}if(k=='lg')applyLights();if(k=='sv'||k=='mu')applyAudio();if(k=='mq'){if(ST.mq&&!envTex)mkEnv(renderer);applyMQ()}if(k=='tx'){b.textContent='GENERANDO...';setTimeout(()=>{buildTex();buildLevel();t()},40)}};c.appendChild(b)})}
-$('pz').onpointerdown=()=>{if(state=='play'){state='pause';firing=false;show('PAUSA','Ajusta gráficos y dificultad, o continúa.','CONTINUAR')}};
+$('pz').onpointerdown=()=>{if(state=='play'){state='pause';firing=false;unlockPtr();show('PAUSA','Ajusta gráficos y dificultad, o continúa.','CONTINUAR')}};
 $('mb2').onclick=()=>{const t=$('set');t.style.display=t.style.display=='block'?'none':'block'};
 function chooser(){const c=$('chs');c.innerHTML='';CH.forEach((h,i)=>{const b=document.createElement('button');b.innerHTML='<b>'+h.n+'</b><small>VIDA '+h.hp+'</small>';b.className=i==cs?'on':'';b.onclick=()=>{cs=i;chooser()};c.appendChild(b)});$('cd').textContent=CH[cs].d}
 buildSet();buildTex();resize();applyLights();newGame();load();
