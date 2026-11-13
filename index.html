@@ -5115,11 +5115,14 @@ if(FBCFG)setTimeout(()=>fbInit(),2500);
 const accB=document.createElement('button');accB.className='s2';accB.textContent='CUENTA Y CLASIFICATORIA';accB.onclick=openAcc;
 const mcB=document.createElement('button'),mlB=document.createElement('button'),mnB=document.createElement('button');mcB.className=mlB.className=mnB.className='s2';mcB.style.display=mlB.style.display=mnB.style.display='none';$('mb').after(mcB,mnB,mlB,accB);
 var instEv=null,insB=document.createElement('button');insB.className='s2';insB.textContent='INSTALAR APP';insB.style.display='none';accB.after(insB);
+const mbMenu=document.createElement('button');mbMenu.className='s2';mbMenu.id='mbMenu';mbMenu.textContent='VOLVER AL MENÚ';mbMenu.style.display='none';
+mbMenu.onclick=()=>{S('click');$('set').style.display='none';if(whOn)whClose(0);cin=null;document.body.classList.remove('cine');firing=false;dmg=shake=0;musCur=null;state='title';unlockPtr();chooser();show('MINI DOOM','Shooter en primera persona. Cruza el Infierno y la Tierra, vence al Icono del Pecado y detén a El Dínamo.','JUGAR')};
+$('mb2').after(mbMenu);
 const isStd=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true,isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const insOK=()=>/^https?:/.test(location.protocol)&&!APK&&!/Electron/.test(navigator.userAgent)&&!isStd()&&(instEv||isIOS);
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEv=e;titleBtns()});addEventListener('appinstalled',()=>{instEv=null;titleBtns()});
 insB.onclick=()=>{if(instEv){const e=instEv;instEv=null;e.prompt();e.userChoice.finally(titleBtns)}else{alert(isIOS?'Para instalar en iPhone/iPad: toca el botón Compartir de Safari y elige "Añadir a pantalla de inicio".':'Para instalar: abre el menú del navegador (⋮) y elige "Instalar app" o "Añadir a pantalla de inicio".\n\nSi no aparece, abre la página directamente en Chrome/Edge/Safari (no dentro de otra app).')}};
-function titleBtns(){insB.style.display=state=='title'&&insOK()?'block':'none';accB.textContent='CUENTA Y CLASIFICATORIA'+(FB.user?' · '+FB.name:'');const sv=svGet(),t=state=='title',d=t&&ST.done;mcB.style.display=t&&sv?'block':'none';mnB.style.display=mlB.style.display=d?'block':'none';if(sv)mcB.textContent='CONTINUAR · NIVEL '+(sv.l+1);const T=LV[selLv].ti;mnB.textContent='NIVEL '+(selLv+1)+(T?' · '+T[1]:'')+' ▸';mlB.textContent='REJUGAR (TODAS LAS ARMAS Y BOTAS)'}
+function titleBtns(){insB.style.display=state=='title'&&insOK()?'block':'none';accB.style.display=state=='title'?'block':'none';accB.textContent='CUENTA Y CLASIFICATORIA'+(FB.user?' · '+FB.name:'');const sv=svGet(),t=state=='title',d=t&&ST.done;mcB.style.display=t&&sv?'block':'none';mnB.style.display=mlB.style.display=d?'block':'none';if(sv)mcB.textContent='CONTINUAR · NIVEL '+(sv.l+1);const T=LV[selLv].ti;mnB.textContent='NIVEL '+(selLv+1)+(T?' · '+T[1]:'')+' ▸';mlB.textContent='REJUGAR (TODAS LAS ARMAS Y BOTAS)';mbMenu.style.display=(state=='pause'||state=='dead')?'block':'none'}
 mcB.onclick=()=>{startMode=1;$('mb').onclick()};
 mnB.onclick=()=>{selLv=(selLv+1)%LV.length;titleBtns()};
 mlB.onclick=()=>{startMode=2;$('mb').onclick()};
@@ -5488,7 +5491,7 @@ onkeyup=e=>{KY[e.key.toLowerCase()]=0};
 oncontextmenu=e=>e.preventDefault();
 
 function buildSet(){const c=$('set');c.innerHTML='';OPT.forEach(([k,n,v])=>{const b=document.createElement('button'),t=()=>b.textContent=n+': '+v[ST[k]];t();b.onclick=()=>{ST[k]=(ST[k]+1)%v.length;t();SV();if(k=='rs'||k=='dr'||k=='fs'||k=='ft'){DRS=1;resize()}if(k=='lg')applyLights();if(k=='sv'||k=='mu')applyAudio();if(k=='mq'){if(ST.mq&&!envTex)mkEnv(renderer);applyMQ()}if(k=='tx'){b.textContent='GENERANDO...';setTimeout(()=>{buildTex();buildLevel();t()},40)}};c.appendChild(b)})}
-$('pz').onpointerdown=()=>{if(state=='play'){state='pause';firing=false;unlockPtr();show('PAUSA','Ajusta gráficos y dificultad, o continúa.','CONTINUAR')}};
+$('pz').onpointerdown=()=>{if(state=='play'){state='pause';firing=false;unlockPtr();show('PAUSA','Ajusta gráficos y dificultad, continúa o vuelve al menú.','CONTINUAR')}};
 $('mb2').onclick=()=>{const t=$('set');t.style.display=t.style.display=='block'?'none':'block'};
 function chooser(){const c=$('chs');c.innerHTML='';CH.forEach((h,i)=>{const b=document.createElement('button');b.innerHTML='<b>'+h.n+'</b><small>VIDA '+h.hp+'</small>';b.className=i==cs?'on':'';b.onclick=()=>{cs=i;chooser()};c.appendChild(b)});$('cd').textContent=CH[cs].d}
 buildSet();buildTex();resize();applyLights();newGame();load();
