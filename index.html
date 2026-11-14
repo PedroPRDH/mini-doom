@@ -4761,7 +4761,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v65',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v66',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){if(ST.fo>0){const h=[0,80,90,100,110,120][ST.fo];return Math.min(125,2*Math.atan(Math.tan(h/2*D2R)/a)/D2R)}const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -5402,9 +5402,9 @@ function hTex(kind){const c=document.createElement('canvas');c.width=c.height=12
 function hmat(k,met,rou){const map=hTex(k),bm=hTex('b');return[new THREE.MeshLambertMaterial({map:map}),new THREE.MeshStandardMaterial({map:map,bumpMap:bm,bumpScale:BS*.8,metalness:met,roughness:rou,envMap:null,envMapIntensity:.9})]}
 function hArm(sd,P,H){const hv=H.hv,A=P.A,Dk=P.D,O=P.O,S=P.S,sc=(m,x,y,z)=>{m.scale.set(x,y,z);return m};
  const sh=new THREE.Group();sh.position.set(sd*.27,.31,0);const up=new THREE.Group();sh.add(up);
- sc(hv(up,sg(.1),S,0,-.0,0),.95,1.0,.95);sc(hv(up,sg(.1),S,sd*.005,-.12,.012),.8,1.25,.82);sc(hv(up,sg(.1),S,0,-.1,-.035),.68,1.1,.6);hv(up,cyg(.062,.05,.27),S,0,-.13,0);
+ sc(hv(up,sg(.1),A,0,-.0,0),.95,1.0,.95);sc(hv(up,sg(.1),A,sd*.005,-.12,.012),.8,1.25,.82);sc(hv(up,sg(.1),A,0,-.1,-.035),.68,1.1,.6);hv(up,cyg(.062,.05,.27),Dk,0,-.13,0);
  if(sd>0){hv(up,rbx(.21,.12,.24,.055),A,.045,.025,0,0,-.2);hv(up,rbx(.212,.022,.242,.01),O,.05,-.03,0,0,-.2)}else{hv(up,rbx(.07,.18,.2,.02),Dk,-.02,.0,0);hv(up,rbx(.09,.06,.12,.025),A,-.03,.07,0);hv(up,rbx(.2,.11,.22,.05),A,-.045,.02,0,0,.2);hv(up,rbx(.202,.02,.222,.01),O,-.05,-.03,0,0,.2)}
- const fo=new THREE.Group();fo.position.y=-.26;up.add(fo);hv(fo,sg(.05),S,0,0,0);hv(fo,cyg(.058,.045,.27),S,0,-.13,0);sc(hv(fo,sg(.1),S,0,-.07,.01),.66,1.1,.7);
+ const fo=new THREE.Group();fo.position.y=-.26;up.add(fo);hv(fo,sg(.05),A,0,0,0);hv(fo,cyg(.058,.045,.27),Dk,0,-.13,0);sc(hv(fo,sg(.1),A,0,-.07,.01),.66,1.1,.7);
  hv(fo,cyg(.062,.058,.15),A,0,-.18,0);hv(fo,cyg(.066,.066,.02),O,0,-.1,0);hv(fo,rbx(.07,.1,.02,.01),Dk,0,-.18,.058);
  hv(fo,rbx(.095,.09,.1,.04),A,0,.01,-.03);hv(fo,rbx(.1,.1,.115,.03),Dk,0,-.275,0);hv(fo,rbx(.085,.03,.05,.012),A,0,-.24,.035);return{sh:sh,up:up,fo:fo}}
 function heroMake(){const R=new THREE.Group();R.rotation.order='YXZ';const Hr=new THREE.MeshLambertMaterial({color:0x2c1f16}),P={A:hmat('a',.55,.5),D:hmat('d',.1,.85),O:hmat('o',.4,.6),S:hmat('s',0,.7),B:hmat('sb',0,.8)};P.H=[Hr,new THREE.MeshStandardMaterial({color:0x2c1f16,roughness:.9,metalness:0})];
@@ -5420,17 +5420,20 @@ function heroMake(){const R=new THREE.Group();R.rotation.order='YXZ';const Hr=ne
   hv(sh,cyg(.07,.056,.28),Dk,0,-.14,0);sc(hv(sh,sg(.1),Dk,0,-.07,-.03),.8,1.3,.85);hv(sh,rbx(.125,.2,.115,.04),A,0,-.11,.048);hv(sh,rbx(.13,.12,.15,.035),Dk,0,-.23,.03);hv(sh,rbx(.15,.1,.28,.04),Dk,0,-.275,.045);hv(sh,rbx(.145,.04,.1,.02),A,0,-.265,.17);hv(sh,rbx(.13,.03,.13,.012),O,0,-.19,.012);return{th:th,sh:sh}};
  H.lL=leg(1);H.lR=leg(-1);
  const ub=new THREE.Group();ub.position.y=.1;hips.add(ub);H.ub=ub;
- sc(hv(ub,sg(.1),S,0,.07,0),1.5,1.0,1.0);for(let i=0;i<3;i++)hv(ub,rbx(.17,.04,.1,.02),A,0,.04+i*.055,.045);for(const s of[-1,1])sc(hv(ub,sg(.1),S,s*.135,.1,0),.55,1.1,.8);
- sc(hv(ub,sg(.1),S,0,.26,-.04),2.2,1.7,.9);for(const s of[-1,1]){sc(hv(ub,sg(.1),S,s*.14,.24,-.1),1.0,1.7,.55);sc(hv(ub,sg(.1),A,s*.105,.29,.085),1.6,1.35,1.15)}
+ sc(hv(ub,sg(.1),Dk,0,.07,0),1.5,1.0,1.0);for(let i=0;i<3;i++)hv(ub,rbx(.17,.04,.1,.02),A,0,.04+i*.055,.045);for(const s of[-1,1])sc(hv(ub,sg(.1),Dk,s*.135,.1,0),.55,1.1,.8);
+ sc(hv(ub,sg(.1),A,0,.26,-.04),2.2,1.7,.9);for(const s of[-1,1]){sc(hv(ub,sg(.1),A,s*.14,.24,-.1),1.0,1.7,.55);sc(hv(ub,sg(.1),A,s*.105,.29,.085),1.6,1.35,1.15)}
  hv(ub,rbx(.07,.21,.05,.02),A,0,.26,.12);hv(ub,rbx(.27,.06,.17,.03),A,0,.36,.0);hv(ub,rbx(.34,.12,.06,.03),A,0,.33,.1);hv(ub,rbx(.34,.28,.05,.03),A,0,.27,-.1);hv(ub,rbx(.46,.03,.3,.012),O,0,.215,-.0);
- sc(hv(ub,sg(.1),S,0,.38,-.03),1.7,.62,.9);
+ sc(hv(ub,sg(.1),A,0,.38,-.03),1.7,.62,.9);
  hv(ub,rbx(.3,.26,.12,.05),Dk,0,.2,-.17);hv(ub,rbx(.2,.06,.1,.02),A,0,.3,-.2);hv(ub,cyg(.045,.045,.3),O,0,.17,-.25,0,Math.PI/2);for(const s of[-1,1]){hv(ub,rbx(.04,.34,.02,.01),Dk,s*.1,.22,-.09,0,s*.06);hv(ub,rbx(.04,.34,.02,.01),Dk,s*.1,.22,.115,0,-s*.05)}
  hv(ub,rbx(.06,.5,.03,.012),Dk,0,.24,.12,0,.62);for(let i=0;i<5;i++)hv(ub,cyg(.013,.013,.055),O,-.08+i*.04,.34-i*.07,.14,Math.PI/2);
  const hd=new THREE.Group();hd.position.y=.4;ub.add(hd);H.hd=hd;
- hv(hd,cyg(.066,.078,.1),S,0,.02,0);for(const s of[-1,1])sc(hv(hd,sg(.1),S,s*.095,-.02,-.035),.9,.6,.7);
- sc(hv(hd,sg(.1),S,0,.145,0),.95,1.2,1.05);hv(hd,rbx(.15,.075,.13,.04),P.B,0,.075,.015);hv(hd,rbx(.032,.04,.04,.012),S,0,.125,.113);hv(hd,rbx(.16,.032,.05,.012),S,0,.178,.09);
- for(const s of[-1,1]){hv(hd,rbx(.028,.016,.012,.005),Dk,s*.04,.15,.102);sc(hv(hd,sg(.1),S,s*.098,.135,0),.3,.55,.4)}hv(hd,rbx(.05,.006,.01,.003),Dk,0,.085,.122);hv(hd,rbx(.008,.075,.012,.004),Dk,.045,.146,.108,0,.3);
- sc(hv(hd,sg(.1),P.H,0,.2,-.025),1.0,.7,1.1);sc(hv(hd,sg(.1),P.H,0,.14,-.085),.95,.9,.55);const hb=hv(hd,cyg(.1,.1,.035),O,0,.172,0);hb.scale.set(1,1,1.1);hv(hd,rbx(.04,.02,.1,.01),O,0,.172,-.125,0);
+ hv(hd,cyg(.066,.078,.1),Dk,0,.02,0);for(const s of[-1,1])sc(hv(hd,sg(.1),A,s*.095,-.02,-.035),.9,.6,.7);
+ const VM=new THREE.MeshBasicMaterial({color:0xffa626});
+ sc(hv(hd,sg(.1),Dk,0,.145,0),.95,1.2,1.05);sc(hv(hd,sg(.1),A,0,.172,-.006),1.14,1.3,1.22);hv(hd,rbx(.15,.08,.12,.04),Dk,0,.085,.02);
+ hv(hd,rbx(.1,.055,.04,.018),A,0,.078,.108);for(let i=-1;i<=1;i++)hv(hd,rbx(.012,.04,.012,.004),Dk,i*.028,.078,.13);
+ hv(hd,rbx(.17,.04,.05,.015),VM,0,.152,.098);hv(hd,rbx(.18,.015,.06,.008),Dk,0,.178,.105);hv(hd,rbx(.18,.015,.06,.008),Dk,0,.126,.105);
+ for(const s of[-1,1]){sc(hv(hd,sg(.1),A,s*.112,.14,0),.4,.8,.7);hv(hd,rbx(.02,.05,.05,.01),O,s*.13,.14,0)}
+ hv(hd,rbx(.03,.05,.2,.012),O,0,.292,0);hv(hd,rbx(.16,.03,.07,.012),A,0,.05,.075);
  H.aR=hArm(-1,P,H);H.aL=hArm(1,P,H);ub.add(H.aR.sh,H.aL.sh);
  const wh=new THREE.Group();wh.rotation.y=Math.PI;ub.add(wh);H.wh=wh;
  H.mf=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffd24a,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true}));H.mf.visible=false;
