@@ -4761,7 +4761,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v69',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v70',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){if(ST.fo>0){const h=[0,80,90,100,110,120][ST.fo];return Math.min(125,2*Math.atan(Math.tan(h/2*D2R)/a)/D2R)}const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -5488,7 +5488,7 @@ function heroUpd(dt,show){let H=TPav;if(!H||!H.R){H=TPav=heroMake()}const R=H.R;
  if(!wp&&wnew[wd]){wp=H.wp[wd]=wnew[wd].g.children[0].clone(true);wp.position.set(0,0,0);wp.scale.setScalar((HW[wd]||HW[0])[3]*1.3);wp.rotation.set(0,0,0)}
  for(let i=0;i<H.wp.length;i++)if(H.wp[i])H.wp[i].visible=i==wd;
  if(wp&&wp.parent!==H.wh){H.wh.add(wp)}
- const P=HW[wd]||HW[0];H.wh.position.set(P[0]-.2*H.gw+(Math.random()-.5)*jt+Math.sin(H.ph)*.018*amp,P[1]+.05*H.gw-sd_*.3-TPr*.2+TPa*.025+Math.sin(t3*1.8)*.004+Math.abs(Math.sin(H.ph))*.03*amp,P[2]+.08*H.gw-k2*HK[wd]);H.wh.rotation.set(sd_*.9-k2*HP[wd]*.5+TPr*.8+.12*H.gw*(1-TPa),Math.PI-tvc*.22-.5*H.gw*(1-TPa)*(1-TPr*.6),Math.sin(t3*9)*.1*H.cut+TPr*.25);
+ const P=HW[wd]||HW[0];H.wh.position.set(P[0]-.2*H.gw+(Math.random()-.5)*jt+Math.sin(H.ph)*.018*amp,P[1]+.05*H.gw-sd_*.3-TPr*.2+TPa*.025+Math.sin(t3*1.8)*.004+Math.abs(Math.sin(H.ph))*.03*amp,P[2]+.08*H.gw-k2*HK[wd]);H.wh.rotation.set(sd_*.9-k2*HP[wd]*.5+TPr*.8+.12*H.gw*(1-TPa),Math.PI-tvc*.22-(wd==0?.18:.5)*H.gw*(1-TPa)*(1-TPr*.6),Math.sin(t3*9)*.1*H.cut+TPr*.25);
  H.wh.updateMatrix();
  const G=WHAND[wd]||WHAND[0],sc=P[3]*(1.3+.45*H.gw);if(wp)wp.scale.setScalar(sc);
  _h1.set(G[0]*sc,G[1]*sc,G[2]*sc).applyMatrix4(H.wh.matrix);const TR=_h1.clone();
