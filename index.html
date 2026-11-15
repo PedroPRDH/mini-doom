@@ -4761,7 +4761,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v66',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v67',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){if(ST.fo>0){const h=[0,80,90,100,110,120][ST.fo];return Math.min(125,2*Math.atan(Math.tan(h/2*D2R)/a)/D2R)}const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -5460,9 +5460,13 @@ function heroUpd(dt,show){let H=TPav;if(!H||!H.R){H=TPav=heroMake()}const R=H.R;
  H.pvz=vzz;H.wasAir=air;H.land=Math.max(0,H.land-dt*4.5);H.flip=Math.max(0,H.flip-dt*2.1);
  H.pa+=((air&&!wl?1:0)-H.pa)*ek;H.psl+=((ds?1:0)-H.psl)*ek;H.pw+=((wl?1:0)-H.pw)*ek;
  const rs=Math.max(-1,Math.min(1,vzz/5)),fu=1-H.flip,fth=H.flip>0?2*Math.PI*fu*fu*(3-2*fu):0,fa=H.flip>0?Math.sin(Math.PI*fu):0,lk=H.land*(1-H.pa);
+ const hsq=[[.2,0],[.5,.05],[.8,.12],[.5,.05],[.7,.1],[.8,.1],[1,.18],[.6,0],[.9,.12]][wi]||[.4,0],st=Math.max(0,1-amp*1.8)*(1-H.pa)*(1-H.psl)*(1-H.pw)*(1-lk)*(alive?1:0),fk0=fireT>0?fireT:0,kk=fk0*fk0,hv0=HP[wi]||0;
+ {const da=H.pa0===undefined?0:((ang-H.pa0+9.42478)%6.28319)-3.14159;H.pa0=ang;H.tv=lp(H.tv||0,dt>0?da/dt:0,Math.min(1,dt*8))}
+ const tvc=Math.max(-1,Math.min(1,H.tv*.25)),cut=wi==7&&typeof sawRev!='undefined'&&sawRev&&alive?1:0;H.cut=lp(H.cut||0,cut,ek);
  {const fl=H.flip>0,nL=H.wr>=0,wy=Math.atan2(H.wr,H.wf),twy=-mA*amp*.9;
   let a=sw,b=-sw,c=amp*.9*(.5+.5*Math.sin(H.ph+1.3*dir)),d=amp*.9*(.5+.5*Math.sin(H.ph+1.3*dir+Math.PI)),yL=twy,yR=twy;
   a-=lk*.9;b-=lk*.9;c+=lk*1.5;d+=lk*1.5;
+  {const W=hsq[0];a=lp(a,-.3-W*.12,st);b=lp(b,.28+W*.12,st);c=lp(c,.3+W*.15+kk*hv0*1.5,st);d=lp(d,.4+W*.2,st);yL=lp(yL,.2,st);yR=lp(yR,-.16,st)}
   const aL=fl?-1.3:-.675-.275*rs,aR=fl?-1.2:.15-.1*rs,aLs=fl?2.0:1+.5*rs,aRs=fl?2.0:.7+.4*rs;
   a=lp(a,aL,H.pa);b=lp(b,aR,H.pa);c=lp(c,aLs,H.pa);d=lp(d,aRs,H.pa);
   a=lp(a,-1.25,H.psl);b=lp(b,-.35,H.psl);c=lp(c,.15,H.psl);d=lp(d,1.9,H.psl);
@@ -5470,21 +5474,21 @@ function heroUpd(dt,show){let H=TPav;if(!H||!H.R){H=TPav=heroMake()}const R=H.R;
   yL=lp(yL,nL?wy:0,H.pw);yR=lp(yR,nL?0:wy,H.pw);
   H.lL.th.rotation.set(a,yL,0);H.lR.th.rotation.set(b,yR,0);H.lL.sh.rotation.x=c;H.lR.sh.rotation.x=d}
  if(!alive){H.lL.th.rotation.x=-.5;H.lR.th.rotation.x=.2;H.lL.sh.rotation.x=.9;H.lR.sh.rotation.x=.3}
- const hips=H.hips;{let hy=.62+Math.abs(Math.sin(H.ph))*.035*amp-lk*.2;hy=lp(hy,.64,H.pa);hy=lp(hy,.36,H.psl);hy=lp(hy,.58,H.pw);hips.position.y=hy+fa*.18}
+ const hips=H.hips;{let hy=.62+Math.abs(Math.sin(H.ph))*.035*amp-lk*.2-st*(.03+.02*hsq[0]);hy=lp(hy,.64,H.pa);hy=lp(hy,.36,H.psl);hy=lp(hy,.58,H.pw);hips.position.y=hy+fa*.18}
  const wk=wi,Q=HW[wk]||HW[0],fk=fireT>0?fireT:0,k2=fk*fk,heavy=HP[wk]||0;
- hips.rotation.x=lp(lp(Math.min(.18,s*.045)+lk*.3,.1*rs+.08,H.pa),-.6,H.psl)-k2*heavy*.3+fth;R.rotation.set(-H.dp*1.45-H.wf*.28*H.pw,Math.atan2(ca,sa),H.wr*.3*H.pw);
- const ub=H.ub;ub.rotation.x=Math.max(-.95,Math.min(.9,-pitch*.85))-k2*heavy*.9-hips.rotation.x*.5+(alive?0:.5)+(dmg>0?dmg*.25:0);ub.rotation.y=Math.sin(H.ph)*.05*amp;
+ hips.rotation.x=lp(lp(Math.min(.26,s*.05)+lk*.3-hsq[1]*(1-H.pa)+H.cut*.22,.1*rs+.08,H.pa),-.6,H.psl)-k2*heavy*.3+fth;hips.position.z=-k2*heavy*.18*(1-H.pa*.5);hips.rotation.y=-.18*st;R.rotation.set(-H.dp*1.45-H.wf*.28*H.pw,Math.atan2(ca,sa),H.wr*.3*H.pw);
+ const ub=H.ub;ub.rotation.x=Math.max(-.95,Math.min(.9,-pitch*.85))-k2*heavy*.9-hips.rotation.x*.5+(alive?0:.5)+(dmg>0?dmg*.25:0);ub.rotation.y=Math.sin(H.ph)*.05*amp+.18*st+Math.sin(t3*9)*.14*H.cut;ub.rotation.z=-tvc*.12;
  ub.scale.y=1+Math.sin(t3*1.8)*.012;const jt=wk==7&&typeof sawC!='undefined'&&sawC>0?.006:0;ub.position.set((Math.random()-.5)*jt,.1+(Math.random()-.5)*jt,0);
- H.hd.rotation.x=-ub.rotation.x*.5+(dmg>0?dmg*.3:0);H.hd.rotation.y=dmg>0?Math.sin(t3*40)*dmg*.15:0;
+ H.hd.rotation.x=-ub.rotation.x*.5+(dmg>0?dmg*.3:0)+k2*heavy*.5;H.hd.rotation.y=(dmg>0?Math.sin(t3*40)*dmg*.15:0)-ub.rotation.y*.6;
  if(wk!==H.w){if(H.w<0){H.w=wk}else if(H.sw<=0)H.sw=1}
  if(H.sw>0){H.sw=Math.max(0,H.sw-dt*3);if(H.sw<=.5&&H.w!==wk)H.w=wk}
  const sd_=H.sw>0?Math.sin((1-H.sw)*Math.PI):0,wd=H.w;let wp=H.wp[wd];
- if(!wp&&wnew[wd]){wp=H.wp[wd]=wnew[wd].g.children[0].clone(true);wp.position.set(0,0,0);wp.scale.setScalar((HW[wd]||HW[0])[3]);wp.rotation.set(0,0,0)}
+ if(!wp&&wnew[wd]){wp=H.wp[wd]=wnew[wd].g.children[0].clone(true);wp.position.set(0,0,0);wp.scale.setScalar((HW[wd]||HW[0])[3]*1.3);wp.rotation.set(0,0,0)}
  for(let i=0;i<H.wp.length;i++)if(H.wp[i])H.wp[i].visible=i==wd;
  if(wp&&wp.parent!==H.wh){H.wh.add(wp)}
- const P=HW[wd]||HW[0];H.wh.position.set(P[0]+(Math.random()-.5)*jt,P[1]-sd_*.3+Math.sin(t3*1.8)*.004+Math.abs(Math.sin(H.ph))*.012*amp,P[2]-k2*HK[wd]);H.wh.rotation.set(sd_*.9-k2*HP[wd]*.5,Math.PI,0);
+ const P=HW[wd]||HW[0];H.wh.position.set(P[0]+(Math.random()-.5)*jt+Math.sin(H.ph)*.018*amp,P[1]-sd_*.3+Math.sin(t3*1.8)*.004+Math.abs(Math.sin(H.ph))*.03*amp,P[2]-k2*HK[wd]);H.wh.rotation.set(sd_*.9-k2*HP[wd]*.5,Math.PI-tvc*.22,Math.sin(t3*9)*.1*H.cut);
  H.wh.updateMatrix();
- const G=WHAND[wd]||WHAND[0],sc=P[3];
+ const G=WHAND[wd]||WHAND[0],sc=P[3]*1.3;
  _h1.set(G[0]*sc,G[1]*sc,G[2]*sc).applyMatrix4(H.wh.matrix);const TR=_h1.clone();
  _h1.set(P[4][0]*sc,P[4][1]*sc,P[4][2]*sc).applyMatrix4(H.wh.matrix);const TL=_h1.clone();
  if(wd==0)TL.x+=.025;
