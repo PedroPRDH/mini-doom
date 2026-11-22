@@ -4888,7 +4888,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 var vents=[],TNT={29:[1.1,1.7,3.2],30:[.5,.75,1.5],31:[2.3,1.2,.45],32:[1.6,.6,2.2]},MOO=l=>l.sky==2||!!l.mo,FLON=1,TV=new THREE.Vector3(),O2=100,O2w=0,RKC=null,RKT=null,BST=0,shCD=0,dashId=0;const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r)||(RKC!==null&&Math.hypot(x-RKC[0],y-RKC[1])<RKC[2]+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v86',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v87',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){if(ST.fo>0){const h=[0,80,90,100,110,120][ST.fo];return Math.min(125,2*Math.atan(Math.tan(h/2*D2R)/a)/D2R)}const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -5388,7 +5388,7 @@ function update(dt){
  fireCD-=dt;fireT=Math.max(0,fireT-dt*3.5);dmg=Math.max(0,dmg-dt*2);bonus=Math.max(0,bonus-dt*2.5);shake=Math.max(0,shake-dt*3);
  sawRev=wi==7&&(firing||(KY[' ']&&!PCM)||KY['control']||shotReq)?1:0;sawC=Math.max(0,sawC-dt);
  if(wi==7){if(sawRev&&fireCD<=0){fireCD=WP[7].cd*CH[cs].fr;sawCut()}sawSnd(true,dt)}
- else{if(sawSnd.n)sawStop();if((firing||(KY[' ']&&!PCM)||KY['control']||shotReq)&&fireCD<=0){if(ammo>=WP[wi].c)shoot();else{fireCD=.4;S('click')}}}
+ else{if(sawSnd.n)sawStop();fBuf=Math.max(0,fBuf-dt);if((firing||fBuf>0||(KY[' ']&&!PCM)||KY['control']||shotReq)&&fireCD<=0){if(ammo>=WP[wi].c){shoot();fBuf=0}else{fireCD=.4;fBuf=0;S('click');const alt=[4,1,3,2,0].find(i=>i!=wi&&own[i]&&ammo>=WP[i].c);if(alt!==undefined){wi=alt;fireT=0;S('swp')}}}}
  shotReq=false;
  if(DY&&DY.e.a)dyTick(DY.e,dt);for(const q of en)if(q.k==33&&q.a)alTick(q,dt);
  flow();for(const e of en.slice()){if(!e.a||e.k==11)continue;const q=(e.x-px)*(e.x-px)+(e.y-py)*(e.y-py),iv=!e.w?.1:q>324?.07:q>100?.04:0;if(iv){e.al=(e.al||0)+dt;if(e.al<iv)continue;aiTick(e,e.al);e.al=0}else aiTick(e,dt)}
@@ -5795,10 +5795,10 @@ ui.onpointerup=ui.onpointercancel=e=>{
  if(e.pointerType=='mouse'){firing=false;return}
  if(e.pointerId===jp){jp=null;joy.x=joy.y=joy.m=0;J.style.display='none';KN.style.transform=''}
  else if(e.pointerId===lp){lp=null;if(!lm&&e.type=='pointerup'&&performance.now()-lst<300)shotReq=true}};
-const fb=$('fire');let fpid=-1,fx0,fy0;fb.onpointerdown=e=>{firing=true;fpid=e.pointerId;fx0=e.clientX;fy0=e.clientY;fb.setPointerCapture(e.pointerId)};
+const fb=$('fire');let fpid=-1,fx0,fy0;fb.onpointerdown=e=>{firing=true;fBuf=.25;fpid=e.pointerId;fx0=e.clientX;fy0=e.clientY;fb.setPointerCapture(e.pointerId)};
 fb.onpointermove=e=>{if(e.pointerId!==fpid||state!='play')return;look+=e.clientX-fx0;lookY+=e.clientY-fy0;fx0=e.clientX;fy0=e.clientY};
 fb.onpointerup=fb.onpointercancel=e=>{if(e.pointerId===fpid)fpid=-1;firing=false};
-var PCM=!(('ontouchstart' in window)||navigator.maxTouchPoints>0)||/Electron/.test(navigator.userAgent);
+var fBuf=0;var PCM=!(('ontouchstart' in window)||navigator.maxTouchPoints>0)||/Electron/.test(navigator.userAgent);
 function setPC(v){PCM=!!v;document.body.classList.toggle('pc',PCM)}setPC(PCM);
 (function(){const st=document.createElement('style');st.textContent='body.pc .b:not(#pz),body.pc .joy{display:none!important}#pch{display:none;font:12px/1.5 system-ui,sans-serif;max-width:420px;text-align:center;opacity:.8;margin:0}body.pc #pch{display:block}';document.head.appendChild(st);
  const h=document.createElement('p');h.id='pch';h.innerHTML='WASD mover · Ratón apuntar y disparar · Clic derecho dash · Espacio saltar · Shift correr<br>Q (mantener) rueda de armas · Rueda del ratón / 1-8 cambia arma · Esc pausa · Mando compatible';$('mb').before(h)})();
@@ -5807,7 +5807,7 @@ const relockPtr=()=>{if(!PCM)return;let n=0;const t=setInterval(()=>{if(document
 const lockPtr=()=>{if(PCM&&(state=='play'||state=='cine')&&!document.pointerLockElement)try{const r=document.documentElement.requestPointerLock();if(r&&r.catch)r.catch(()=>{})}catch(e){}};
 document.addEventListener('pointerdown',e=>{if(e.pointerType=='touch'&&PCM)setPC(0)},true);
 document.addEventListener('pointermove',e=>{if(e.pointerType=='mouse'&&!PCM)setPC(1)},true);
-document.addEventListener('mousedown',e=>{if(!PCM||state!='play')return;if(e.button==0){if(!document.pointerLockElement)lockPtr();firing=true}else if(e.button==2)dashReq=1});
+document.addEventListener('mousedown',e=>{if(!PCM||state!='play')return;if(e.button==0){if(!document.pointerLockElement)lockPtr();firing=true;fBuf=.25}else if(e.button==2)dashReq=1});
 document.addEventListener('mouseup',e=>{if(e.button==0)firing=false});
 document.addEventListener('contextmenu',e=>{if(PCM)e.preventDefault()});
 document.addEventListener('mousemove',e=>{if(document.pointerLockElement&&state=='play'&&!whOn){look+=e.movementX*.5;lookY+=e.movementY*.5}});
