@@ -4888,7 +4888,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 var vents=[],TNT={29:[1.1,1.7,3.2],30:[.5,.75,1.5],31:[2.3,1.2,.45],32:[1.6,.6,2.2]},MOO=l=>l.sky==2||!!l.mo,FLON=1,TV=new THREE.Vector3(),O2=100,O2w=0,RKC=null,RKT=null,BST=0,shCD=0,dashId=0;const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r)||(RKC!==null&&Math.hypot(x-RKC[0],y-RKC[1])<RKC[2]+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v81',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v82',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){if(ST.fo>0){const h=[0,80,90,100,110,120][ST.fo];return Math.min(125,2*Math.atan(Math.tan(h/2*D2R)/a)/D2R)}const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -5688,9 +5688,9 @@ function heroUpd(dt,show){let H=TPav;if(!H||!H.R){H=TPav=heroMake()}const R=H.R;
  if(wl){const wr0=-wallN[0]*sa+wallN[1]*ca,wf0=-wallN[0]*ca-wallN[1]*sa;H.wr=lp(H.wr,wr0,ek);H.wf=lp(H.wf,wf0,ek)}
  if(H.wasAir&&!air&&alive&&H.pvz<-2)H.land=Math.min(1,.3+(-H.pvz-2)*.08);
  if(air&&H.wasAir&&alive&&vzz-H.pvz>3&&!wallN)H.flip=1;
- H.pvz=vzz;H.wasAir=air;H.land=Math.max(0,H.land-dt*4.5);H.flip=Math.max(0,H.flip-dt*2.1);
+ H.pvz=vzz;H.wasAir=air;H.land=Math.max(0,H.land-dt*4.5);H.flip=Math.max(0,H.flip-dt*(air?2.1:7));
  H.pa+=((air&&!wl?1:0)-H.pa)*ek;H.psl+=((ds?1:0)-H.psl)*ek;H.pw+=((wl?1:0)-H.pw)*ek;
- const rs=Math.max(-1,Math.min(1,vzz/5)),fu=1-H.flip,fth=H.flip>0?2*Math.PI*fu*fu*(3-2*fu):0,fa=H.flip>0?Math.sin(Math.PI*fu):0,lk=H.land*(1-H.pa);
+ const rs=Math.max(-1,Math.min(1,vzz/5)),fu=1-H.flip,fq=Math.min(1,fu/.82),fth=H.flip>0?2*Math.PI*fq*fq*(3-2*fq):0,fa=H.flip>0?Math.sin(Math.PI*fu):0,tk=Math.min(1,fa*2.5),lk=H.land*(1-H.pa);
  {let cvT=0;if(TPg&&alive&&pgr&&mv<.25&&TPat<=0){const dF=cast(px,py,ca,sa).d,dL=cast(px,py,sa,-ca).d,dR=cast(px,py,-sa,ca).d,m0=Math.min(dF,dL,dR);if(m0<.75){cvT=1;const w=m0==dF?[0,1]:m0==dL?[1,0]:[-1,0];H.cvr=lp(H.cvr,w[0],ek);H.cvf=lp(H.cvf,w[1],ek)}}H.cv+=(cvT-H.cv)*ek}
  const hsq=[[.2,0],[.5,.05],[.8,.12],[.5,.05],[.7,.1],[.8,.1],[1,.18],[.6,0],[.9,.12],[.9,.12]][wi]||[.4,0],st=Math.max(0,1-amp*1.8)*(1-H.pa)*(1-H.psl)*(1-H.pw)*(1-lk)*(1-H.cv)*(alive?1:0),fk0=fireT>0?fireT:0,kk=fk0*fk0,hv0=HP[wi]||0;
  {const da=H.pa0===undefined?0:((ang-H.pa0+9.42478)%6.28319)-3.14159;H.pa0=ang;H.tv=lp(H.tv||0,dt>0?da/dt:0,Math.min(1,dt*8))}
@@ -5700,14 +5700,14 @@ function heroUpd(dt,show){let H=TPav;if(!H||!H.R){H=TPav=heroMake()}const R=H.R;
   a-=lk*.9;b-=lk*.9;c+=lk*1.5;d+=lk*1.5;
   {const W=hsq[0];a=lp(a,-.3-W*.12,st);b=lp(b,.28+W*.12,st);c=lp(c,.3+W*.15+kk*hv0*1.5,st);d=lp(d,.4+W*.2,st);yL=lp(yL,.2,st);yR=lp(yR,-.16,st)}
   a*=1+.35*TPr;b*=1+.35*TPr;a=lp(a,-.85,H.cv);b=lp(b,-.6,H.cv);c=lp(c,1.6,H.cv);d=lp(d,1.5,H.cv);
-  const aL=fl?-1.3:-.675-.275*rs,aR=fl?-1.2:.15-.1*rs,aLs=fl?2.0:1+.5*rs,aRs=fl?2.0:.7+.4*rs;
+  const aL=lp(-.675-.275*rs,-1.3,tk),aR=lp(.15-.1*rs,-1.2,tk),aLs=lp(1+.5*rs,2.0,tk),aRs=lp(.7+.4*rs,2.0,tk);
   a=lp(a,aL,H.pa);b=lp(b,aR,H.pa);c=lp(c,aLs,H.pa);d=lp(d,aRs,H.pa);
   a=lp(a,-1.25,H.psl);b=lp(b,-.35,H.psl);c=lp(c,.15,H.psl);d=lp(d,1.9,H.psl);
   a=lp(a,nL?-1.0:-.25,H.pw);b=lp(b,nL?-.25:-1.0,H.pw);c=lp(c,nL?1.2:.45,H.pw);d=lp(d,nL?.45:1.2,H.pw);
   yL=lp(yL,nL?wy:0,H.pw);yR=lp(yR,nL?0:wy,H.pw);
   H.lL.th.rotation.set(a,yL,0);H.lR.th.rotation.set(b,yR,0);H.lL.sh.rotation.x=c;H.lR.sh.rotation.x=d}
  if(!alive){H.lL.th.rotation.x=-.5;H.lR.th.rotation.x=.2;H.lL.sh.rotation.x=.9;H.lR.sh.rotation.x=.3}
- const hips=H.hips;{let hy=.62+Math.abs(Math.sin(H.ph))*.035*amp-lk*.2-st*(.03+.02*hsq[0])-H.cv*.24;hy=lp(hy,.64,H.pa);hy=lp(hy,.36,H.psl);hy=lp(hy,.58,H.pw);hips.position.y=hy+fa*.18}
+ const hips=H.hips;{let hy=.62+Math.abs(Math.sin(H.ph))*.035*amp-lk*.2-st*(.03+.02*hsq[0])-H.cv*.24;hy=lp(hy,.64,H.pa);hy=lp(hy,.36,H.psl);hy=lp(hy,.58,H.pw);hips.position.y=hy+fa*fa*.18}
  const wk=wi,Q=HW[wk]||HW[0],fk=fireT>0?fireT:0,k2=fk*fk,heavy=HP[wk]||0;
  hips.rotation.x=lp(lp(Math.min(.26,s*.05)+lk*.3-hsq[1]*(1-H.pa)+H.cut*.22+(TPg?.08:0)+.38*TPr+.22*H.cv,.1*rs+.08,H.pa),-.6,H.psl)-k2*heavy*.3+fth;hips.position.z=-k2*heavy*.18*(1-H.pa*.5);hips.rotation.y=-(.18+.12*TPa)*st;R.rotation.set(-H.dp*1.45-H.wf*.28*H.pw,Math.atan2(ca,sa),H.wr*.3*H.pw);
  const ub=H.ub;ub.rotation.x=Math.max(-.95,Math.min(.9,-pitch*.85))-k2*heavy*.9-hips.rotation.x*.5+(alive?0:.5)+(dmg>0?dmg*.25:0);ub.rotation.y=Math.sin(H.ph)*.05*amp+(.18+.12*TPa)*st+Math.sin(t3*9)*.14*H.cut;ub.rotation.z=-tvc*.12;
