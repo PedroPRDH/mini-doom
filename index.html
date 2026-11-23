@@ -4867,8 +4867,20 @@ let mu=null,musCur=null,hid=false;const MV=()=>[0,.3,.55,.85][ST.mu],MTR=['Relen
 function musInit(){if(mu||typeof ASSETS=='undefined'||!ASSETS.a)return;mu={};for(const k in ASSETS.a){try{const a=new Audio();a.src=URL.createObjectURL(new Blob([b64buf(ASSETS.a[k])],{type:'audio/mpeg'}));a.loop=false;a.preload='auto';a.volume=0;mu[k]=a}catch(e){}}}
 function musPlay(n,fresh){musInit();if(!mu)return;const a=mu[n];if(!a)return;if(fresh){try{a.currentTime=0}catch(e){}}musCur=n;if(a.paused&&!hid){const p=a.play();if(p&&p.catch)p.catch(()=>{})}}
 function musNext(){if(!mu)return;const i=MTR.indexOf(musCur),n=MTR.length;for(let j=1;j<=n;j++){const k=MTR[(i+j+n)%n];if(k!=musCur&&mu[k]){musPlay(k,true);return}}}
-function musLvl(){if(!mu)musInit();if(!mu)return;const c=musCur&&mu[musCur];if(LV[lvl].fin||LV[lvl].dyn||LV[lvl].qn){if(musCur!='Final_Hit')musPlay('Final_Hit',true);else if(c.currentTime>8)musPlay('Final_Hit',true);else musPlay('Final_Hit')}else if(musCur=='Final_Hit')musPlay('Piston_Overdrive',true);else musPlay(c&&!c.ended?musCur:MTR[0])}
-function musTick(dt){if(!mu)return;const cu=musCur&&mu[musCur];if(cu&&!hid&&cu.duration>0&&(cu.ended||cu.duration-cu.currentTime<2.5))musNext();const base=hid?0:MV()*(state=='pause'?.4:1);for(const k in mu){const a=mu[k],tg=k==musCur?base:0,d=tg-a.volume;a.volume=Math.max(0,Math.min(1,a.volume+Math.sign(d)*Math.min(Math.abs(d),dt*.7)));if(tg==0&&a.volume<.01&&!a.paused)a.pause();else if(tg>0&&a.paused&&!hid){const p=a.play();if(p&&p.catch)p.catch(()=>{})}}}
+function musLvl(){if(!mu)musInit();if(!mu)return;if(MOO(LV[lvl])&&!LV[lvl].qn){musCur='';return}const c=musCur&&mu[musCur];if(LV[lvl].fin||LV[lvl].dyn||LV[lvl].qn){if(musCur!='Final_Hit')musPlay('Final_Hit',true);else if(c.currentTime>8)musPlay('Final_Hit',true);else musPlay('Final_Hit')}else if(musCur=='Final_Hit')musPlay('Piston_Overdrive',true);else musPlay(c&&!c.ended?musCur:MTR[0])}
+var LUN=null;const LRT=[55,49,58.27,43.65],LPN=[440,523.3,659.3,784,1046.5];
+function lunTick(dt){try{const want=!hid&&ac&&ac.state=='running'&&MOO(LV[lvl])&&!LV[lvl].qn&&(state=='play'||state=='pause'||state=='cine');
+ if(want&&!LUN){const g=ac.createGain();g.gain.value=0;const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=420;lp.Q.value=2;lp.connect(g);
+  const os=[['sawtooth',1],['sawtooth',1.5],['triangle',2.378]].map(([t,m],i)=>{const o=ac.createOscillator();o.type=t;o.frequency.value=LRT[0]*m;o.detune.value=(i-1)*7;const og=ac.createGain();og.gain.value=i==2?.35:.5;o.connect(og);og.connect(lp);o.start();return{o:o,m:m}});
+  const lf=ac.createOscillator();lf.frequency.value=.11;const lg=ac.createGain();lg.gain.value=170;lf.connect(lg);lg.connect(lp.frequency);lf.start();
+  const dl=ac.createDelay(2);dl.delayTime.value=.62;const fb=ac.createGain();fb.gain.value=.45;dl.connect(fb);fb.connect(dl);const pg=ac.createGain();pg.gain.value=.5;pg.connect(g);pg.connect(dl);dl.connect(g);g.connect(ac.destination);
+  LUN={g:g,os:os,lf:lf,pg:pg,dl:dl,t:0,i:0,p:2}}
+ if(!LUN)return;const tg=want?MV()*(state=='pause'?.4:1)*.45:0,cg=LUN.g.gain.value;LUN.g.gain.value=cg+(tg-cg)*Math.min(1,dt*.8);
+ if(!want&&LUN.g.gain.value<.002){LUN.os.forEach(x=>x.o.stop());LUN.lf.stop();LUN.g.disconnect();LUN=null;return}
+ if(!want)return;LUN.t+=dt;if(LUN.t>8){LUN.t=0;LUN.i=(LUN.i+1)%4;const r=LRT[LUN.i]*(LV[lvl].dk?.9:1);LUN.os.forEach(x=>x.o.frequency.setTargetAtTime(r*x.m,ac.currentTime,1.6))}
+ LUN.p-=dt;if(LUN.p<=0){LUN.p=3+Math.random()*4;const o=ac.createOscillator();o.type='sine';o.frequency.value=LPN[Math.random()*5|0]*(Math.random()<.4?.5:1);const e=ac.createGain();const t=ac.currentTime;e.gain.setValueAtTime(0,t);e.gain.linearRampToValueAtTime(.35,t+.02);e.gain.exponentialRampToValueAtTime(.001,t+2.2);o.connect(e);e.connect(LUN.pg);o.start(t);o.stop(t+2.3)}
+}catch(e){}}
+function musTick(dt){lunTick(dt);if(!mu)return;const cu=musCur&&mu[musCur];if(cu&&!hid&&cu.duration>0&&(cu.ended||cu.duration-cu.currentTime<2.5))musNext();const base=hid?0:MV()*(state=='pause'?.4:1);for(const k in mu){const a=mu[k],tg=k==musCur?base:0,d=tg-a.volume;a.volume=Math.max(0,Math.min(1,a.volume+Math.sign(d)*Math.min(Math.abs(d),dt*.7)));if(tg==0&&a.volume<.01&&!a.paused)a.pause();else if(tg>0&&a.paused&&!hid){const p=a.play();if(p&&p.catch)p.catch(()=>{})}}}
 function applyAudio(){if(mg)mg.gain.value=SVV()}
 document.addEventListener('visibilitychange',()=>{hid=document.hidden;if(hid){if(state=='play')$('pz').onpointerdown();if(ac&&ac.suspend)ac.suspend();if(mu)for(const k in mu)mu[k].pause()}else{if(ac&&ac.resume)ac.resume();if(musCur)musPlay(musCur)}});
 /* motor: rayos DDA */
@@ -4888,7 +4900,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 var vents=[],TNT={29:[1.1,1.7,3.2],30:[.5,.75,1.5],31:[2.3,1.2,.45],32:[1.6,.6,2.2]},MOO=l=>l.sky==2||!!l.mo,FLON=1,TV=new THREE.Vector3(),O2=100,O2w=0,RKC=null,RKT=null,BST=0,shCD=0,dashId=0;const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r)||(RKC!==null&&Math.hypot(x-RKC[0],y-RKC[1])<RKC[2]+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v89',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v90',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){if(ST.fo>0){const h=[0,80,90,100,110,120][ST.fo];return Math.min(125,2*Math.atan(Math.tan(h/2*D2R)/a)/D2R)}const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
