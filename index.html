@@ -125,9 +125,21 @@ body.mt .hud,body.mt .b,body.mt .joy{visibility:hidden!important}body.mt #hc{opa
 #h2 small{font:600 9px/1 MDOswald,sans-serif;letter-spacing:.22em;color:#d2a574;text-transform:uppercase}
 #h2.low{animation:hpl .5s infinite alternate}#h2.low b{color:#ff5a40}
 #h3{font:600 11px/1 MDOswald,sans-serif;letter-spacing:.2em;color:#d2a574;text-transform:uppercase;text-shadow:0 2px 0 #000;margin-top:2px;margin-right:2px}
+#ls{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 38%,#2c1210 0,#150a09 55%,#050303 100%);transition:opacity .55s;color:#f1dcc2;text-align:center}
+#ls.out{opacity:0;pointer-events:none}
+#ls .lsb{width:min(78vw,520px)}
+#ls h1{margin:0;font:400 clamp(40px,11vw,84px)/1 MDAnton,Impact,sans-serif;letter-spacing:.06em;color:transparent;background:linear-gradient(180deg,#fff3b0,#ffc02a 40%,#ff5a1a 75%,#a01004);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 4px 0 #2a0400) drop-shadow(0 0 18px rgba(255,70,20,.45));animation:lsp 2.4s ease-in-out infinite alternate}
+@keyframes lsp{to{filter:drop-shadow(0 4px 0 #2a0400) drop-shadow(0 0 30px rgba(255,90,30,.8))}}
+#ls small{display:block;margin:10px 0 26px;font:600 11px/1 MDOswald,Oswald,sans-serif;letter-spacing:.34em;color:#d2a574}
+#ls .lbar{position:relative;height:12px;background:#0b0505;box-shadow:inset 0 0 0 1px #5a3326;overflow:hidden;clip-path:polygon(0 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+#ls .lbar i{position:absolute;inset:0;transform-origin:left;transform:scaleX(.04);transition:transform .35s;background:linear-gradient(180deg,#ffd24a,#ff5a1a 55%,#a01004)}
+#ls .lbar::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 11px,rgba(0,0,0,.55) 11px 12px)}
+#ls p{margin:12px 0 0;font:600 12px/1 MDOswald,Oswald,sans-serif;letter-spacing:.26em;color:#f1dcc2}
+#ls #lsh{margin-top:26px;min-height:30px;font:500 12px/1.5 MDOswald,Oswald,sans-serif;letter-spacing:.08em;color:#a98d6c;text-transform:none}
 </style>
 </head>
 <body>
+<div id="ls"><div class="lsb"><h1>MINI DOOM</h1><small>EL INFIERNO · LA TIERRA · LA LUNA</small><div class="lbar"><i id="lsf"></i></div><p id="lst">CARGANDO</p><p id="lsh"></p></div><i class="lsv" id="lsv"></i></div>
 <canvas id="c"></canvas><canvas id="hc"></canvas><div id="sa"></div>
 <div id="ui"></div>
 <div class="joy" id="joy"><i id="kn"></i></div>
@@ -4900,7 +4912,7 @@ const gh=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?0:HG[(y|0)*MW+(x|0)]||0,g4=(x,y,r)=>Mat
 var vents=[],TNT={29:[1.1,1.7,3.2],30:[.5,.75,1.5],31:[2.3,1.2,.45],32:[1.6,.6,2.2]},MOO=l=>l.sky==2||!!l.mo,FLON=1,TV=new THREE.Vector3(),O2=100,O2w=0,RKC=null,RKT=null,BST=0,shCD=0,dashId=0;const wOut=(x,y)=>x<0||y<0||x>=MW||y>=MH||M[y|0][x|0],hit=(x,y,r)=>wOut(x-r,y-r)||wOut(x+r,y-r)||wOut(x-r,y+r)||wOut(x+r,y+r)||(RKC!==null&&Math.hypot(x-RKC[0],y-RKC[1])<RKC[2]+r);
 const dirs=()=>{dX=Math.cos(ang);dY=Math.sin(ang);pX=-dY*fv;pY=dX*fv};
 /* pantalla: FOV vertical que se adapta a la relación de aspecto (horizontal entre 88 y 112 grados) y margenes seguros */
-const VER='v92',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
+const VER='v93',APK=!!window.Capacitor||/;\s*wv\)/.test(navigator.userAgent),D2R=Math.PI/180,SAe=$('sa');let SA={t:0,r:0,b:0,l:0},BF=74,LW=0,LH=0;
 function readSA(){try{const c=getComputedStyle(SAe);SA={t:parseFloat(c.paddingTop)||0,r:parseFloat(c.paddingRight)||0,b:parseFloat(c.paddingBottom)||0,l:parseFloat(c.paddingLeft)||0}}catch(e){}}
 function fovFor(a){if(ST.fo>0){const h=[0,80,90,100,110,120][ST.fo];return Math.min(125,2*Math.atan(Math.tan(h/2*D2R)/a)/D2R)}const hf=Math.max(88,Math.min(112,2*Math.atan(Math.tan(37*D2R)*a)/D2R));return Math.min(110,2*Math.atan(Math.tan(hf/2*D2R)/a)/D2R)}
 function wfovFor(a){return Math.min(100,Math.max(58,2*Math.atan(Math.tan(35*D2R)/a)/D2R))}
@@ -5926,14 +5938,18 @@ function buildSet(){const c=$('set');c.innerHTML='';OPT.forEach(([k,n,v])=>{cons
 var pauseAt=0;$('pz').onpointerdown=()=>{if(state=='play'){state='pause';pauseAt=performance.now();firing=false;unlockPtr();clearTimeout(mbMenu._t);delete mbMenu.dataset.c;mbMenu.textContent='VOLVER AL MENÚ';show('PAUSA','Nivel '+(lvl+1)+' de '+LV.length+' · Enemigos eliminados: '+kills+' de '+tot+'. Continúa, reinicia el nivel o vuelve al menú.','CONTINUAR')}};
 $('mb2').onclick=()=>{const t=$('set');t.style.display=t.style.display=='block'?'none':'block'};
 function chooser(){const c=$('chs');c.innerHTML='';CH.forEach((h,i)=>{const b=document.createElement('button');b.innerHTML='<b>'+h.n+'</b><small>VIDA '+h.hp+'</small>';b.className=i==cs?'on':'';b.onclick=()=>{cs=i;chooser()};c.appendChild(b)});$('cd').textContent=CH[cs].d}
-buildSet();buildTex();resize();applyLights();newGame();load();
+var LSP=0,LSTIPS=['Salta dos veces para hacer una voltereta.','Tras vencer al Dínamo consigues el escudo: aterriza con fuerza para lanzar una onda expansiva.','En la Luna vigila tu oxígeno y busca los tubos.','Los enemigos sueltan munición y botiquines al morir.','El cañón de riel atraviesa a varios enemigos.','En la pelea final, uno solo de los clones es la Reina real.','Usa la rueda de armas para cambiar rápido.'];
+function lsSet(p){LSP=Math.max(LSP,Math.min(.97,p));const f=$('lsf'),t=$('lst');if(f)f.style.transform='scaleX('+LSP+')';if(t)t.textContent='CARGANDO '+Math.round(LSP*100)+'%'}
+function lsDone(){const l=$('ls');if(!l)return;lsSet(1);const f=$('lsf');if(f)f.style.transform='scaleX(1)';$('lst').textContent='LISTO';setTimeout(()=>{l.classList.add('out');setTimeout(()=>l.remove(),700)},350)}
+(function(){const h=$('lsh');if(!h)return;let i=Math.floor(Math.random()*LSTIPS.length);h.textContent=LSTIPS[i];setInterval(()=>{if(!$('ls'))return;i=(i+1)%LSTIPS.length;h.textContent=LSTIPS[i]},3200);lsSet(.08);setTimeout(lsDone,40000)})();
+buildSet();lsSet(.15);buildTex();lsSet(.25);resize();applyLights();newGame();load();lsSet(.3);
 (function(){const m=$('msg'),L=document.createElement('div'),R=document.createElement('div'),h=document.createElement('p');L.id='mL';R.id='mR';h.id='hint';
  const keep=[$('mt'),$('mp'),$('cw'),$('dg')],rest=[...m.children].filter(c=>!keep.includes(c));m.insertBefore(L,m.firstChild);L.append($('mt'),$('mp'),h,$('cw'));rest.forEach(c=>R.appendChild(c));m.insertBefore(R,$('dg'));
  new MutationObserver(()=>{if(m.style.display=='none')document.body.classList.remove('mt')}).observe(m,{attributes:true,attributeFilter:['style']});const v=document.createElement('div');v.id='mver';v.textContent='MINI DOOM · '+VER;R.appendChild(v);
  const mem=document.createElement('div');mem.id='mem';m.appendChild(mem);for(let i=0;i<18;i++){const e=document.createElement('i'),z=2+Math.random()*3;e.className='em';e.style.cssText='left:'+(Math.random()*100)+'%;width:'+z+'px;height:'+z+'px;animation-duration:'+(6+Math.random()*9)+'s;animation-delay:'+(-Math.random()*14)+'s';mem.appendChild(e)}})();
 chooser();show('MINI DOOM','Shooter en primera persona. Cruza el Infierno y la Tierra, vence al Icono del Pecado y detén a El Dínamo.','JUGAR');
-{const b=$('mb'),T=NM.length;b.disabled=true;b.textContent='CARGANDO 0/'+T;mdl.cb=n=>{b.textContent='CARGANDO '+n+'/'+T};
- loadModels(()=>{try{buildLevel()}catch(e){console.error(e)}b.disabled=false;b.textContent=state=='title'?(svGet()?'NUEVA PARTIDA':'JUGAR'):b.textContent;titleBtns();window.__ready=1})}
+{const b=$('mb'),T=NM.length;b.disabled=true;b.textContent='CARGANDO 0/'+T;mdl.cb=n=>{b.textContent='CARGANDO '+n+'/'+T;lsSet(.3+.65*n/T)};
+ loadModels(()=>{try{buildLevel()}catch(e){console.error(e)}b.disabled=false;b.textContent=state=='title'?(svGet()?'NUEVA PARTIDA':'JUGAR'):b.textContent;titleBtns();lsDone();window.__ready=1})}
 let lt=0,nT=0;const RAF={c:0,t0:performance.now(),hz:0};const HUDc=['','','',''];
 const FPSE=document.createElement('div');FPSE.style.cssText='position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 28px);color:#9f9;font:12px/1.3 monospace;text-shadow:0 1px 0 #000;pointer-events:none;z-index:5;white-space:pre;text-align:center;display:none';document.body.appendChild(FPSE);
 const PF={mx:0,sl:0,n:0,t:0,u:0,r:0,late:0,lc:0,fast:0};renderer.info.autoReset=false;
